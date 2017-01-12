@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Wonderple</string>
+
+    <string name="crash_toast_text">Crash</string>
+
+    <string name="str_permission_message_camera">To use those functions, you need authorizations for camera storage space. please change permission in a setting</string>
+
+    <string name="str_confirm">confirm</string>
+    <string name="str_close">close</string>
+    <string name="str_next">next</string>
+    <string name="str_setting">setting</string>
+
+    <string name="str_take_picture_from_camera">Photo shoot</string>
+    <string name="str_take_picture_from_gallery">Choose from photo album</string>
+
+    <string name="str_check_gps_title">Location Services settings</string>
+    <string name="str_check_gps_message">Wireless Network, Wi-fi, and GPS must all be in use to accurately find your location. Would you like to turn on these settings now?</string>
+
+    <string name="str_cancel">Cancel</string>
+    <string name="str_ok">Ok</string>
+</resources>
