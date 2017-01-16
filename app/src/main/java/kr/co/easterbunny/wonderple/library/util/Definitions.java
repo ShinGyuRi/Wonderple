@@ -5,6 +5,10 @@ package kr.co.easterbunny.wonderple.library.util;
  */
 public class Definitions {
 
+    public interface PREFKEY    {
+        String IS_VISIT_EXPERIENCE_BOOL = "IS_VISIT_EXPERIENCE_BOOL";
+    }
+
     public interface ACTIVITY_REQUEST_CODE {
         int PICK_GALLERY = 1;
         int PICK_CAMERA = 2;
@@ -29,6 +33,20 @@ public class Definitions {
         int CAMERA_ACT = 500;
 
     }
+
+
+    public interface AUTH_CHANNEL {
+        String FACEBOOK = "FA";
+        String KAKAOTALK = "KA";
+        String EMAIL = "EM";
+        String TWITTER = "TW";
+        String LINE = "LI";
+        String WECHAT = "WI";
+        String WATSAPP = "WA";
+        String INSTAGRAM = "IN";
+    }
+
+
 
     public interface MAIN_TAB {
         String HOME = "HOME";

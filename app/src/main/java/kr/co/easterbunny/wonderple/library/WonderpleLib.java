@@ -18,9 +18,9 @@ import kr.co.easterbunny.wonderple.model.User;
 /**
  * Created by kimjeonghwi on 2016. 7. 14..
  */
-public class TiltCodeLib
+public class WonderpleLib
 {
-    private static TiltCodeLib sharedTiltCodeLibObj;
+    private static WonderpleLib sharedWonderpleLibObj;
     private SharedPreferences.Editor shardPrefEd;
     SharedPreferences sharedPref;
 
@@ -34,14 +34,14 @@ public class TiltCodeLib
 
 
 
-    public static TiltCodeLib getInstance()
+    public static WonderpleLib getInstance()
     {
-        if(sharedTiltCodeLibObj == null)
+        if(sharedWonderpleLibObj == null)
         {
-            sharedTiltCodeLibObj = new TiltCodeLib();
+            sharedWonderpleLibObj = new WonderpleLib();
         }
 
-        return sharedTiltCodeLibObj;
+        return sharedWonderpleLibObj;
     }
 
 
@@ -137,7 +137,7 @@ public class TiltCodeLib
         }
         else
         {
-            Log.d("HWI"," func01_saveUserData --> 잘못된 API 호출입니다.");
+            Log.d("JIN"," func01_saveUserData --> 잘못된 API 호출입니다.");
             return ;
         }
     }
@@ -182,10 +182,10 @@ public class TiltCodeLib
         makedSignInResult.user.snstype = snstype;
         makedSignInResult.user.udid = udid;
 
-        Log.d("HWI","func01_loadUserDataToFile 확인 0001 : latitude --> "+latitude);
+        Log.d("JIN","func01_loadUserDataToFile 확인 0001 : latitude --> "+latitude);
 
-        Log.d("HWI","func01_loadUserDataToFile 확인 0002 : udid --> "+udid);
-        Log.d("HWI","func01_loadUserDataToFile 확인 0003 : makedSignInResult.sessionToken --> "+makedSignInResult.sessionToken);
+        Log.d("JIN","func01_loadUserDataToFile 확인 0002 : udid --> "+udid);
+        Log.d("JIN","func01_loadUserDataToFile 확인 0003 : makedSignInResult.sessionToken --> "+makedSignInResult.sessionToken);
 
         if(!makedSignInResult.sessionToken.equals(""))
         {
@@ -406,7 +406,7 @@ public class TiltCodeLib
         }
         else
         {
-            Log.d("HWI","피해가는 값 확인 : "+degreeValue);
+            Log.d("JIN","피해가는 값 확인 : "+degreeValue);
         }
 
         return returnValue;
@@ -453,7 +453,7 @@ public class TiltCodeLib
     {
         if(sharedPref == null)
         {
-            sharedPref = context.getSharedPreferences("TiltCodeLib" , context.MODE_PRIVATE);
+            sharedPref = context.getSharedPreferences("WonderpleLib" , context.MODE_PRIVATE);
         }
 
         return sharedPref;
@@ -464,7 +464,7 @@ public class TiltCodeLib
     {
         if(shardPrefEd == null)
         {
-            shardPrefEd = context.getSharedPreferences("TiltCodeLib" , context.MODE_PRIVATE).edit();
+            shardPrefEd = context.getSharedPreferences("WonderpleLib" , context.MODE_PRIVATE).edit();
         }
 
         return shardPrefEd;

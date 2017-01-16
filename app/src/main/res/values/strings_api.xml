@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="kakao_app_key">63f12f8924f13951debd655722ef1732</string>
+
+    <!--Facebook App ID-->
+    <string name="facebook_app_id">1734208403484325</string>
+</resources>

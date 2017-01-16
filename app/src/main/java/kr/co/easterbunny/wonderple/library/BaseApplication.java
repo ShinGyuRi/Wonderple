@@ -10,6 +10,7 @@ import android.content.pm.Signature;
 import android.util.Base64;
 
 import com.facebook.FacebookSdk;
+import com.kakao.auth.KakaoSDK;
 
 import org.acra.ReportField;
 import org.acra.ReportingInteractionMode;
@@ -19,6 +20,7 @@ import java.security.MessageDigest;
 
 import kr.co.easterbunny.wonderple.R;
 import kr.co.easterbunny.wonderple.library.util.Debug;
+import kr.co.easterbunny.wonderple.sdk.KakaoSDKAdapter;
 
 /**
  * Created by Gyul on 2016-06-16.
@@ -65,12 +67,15 @@ public class BaseApplication extends Application {
         return mContext.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE;
     }
 
+    public static synchronized BaseApplication getInstance()    {   return instance;    }
+
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
         setHashKey();
 
+        KakaoSDK.init(new KakaoSDKAdapter());
         FacebookSdk.sdkInitialize(this.getApplicationContext());
 
     }

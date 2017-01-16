@@ -36,18 +36,6 @@ public abstract class ParentFragment extends Fragment {
         super.onResume();
     }
 
-    public void showKeyboard(final View view) {
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(view, InputMethodManager.SHOW_FORCED);
-    }
-
-    public void hiddenKeyboard() {
-        if (inputManager == null)
-            inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (inputManager.isActive()) {
-            inputManager.hideSoftInputFromWindow(getActivity().getWindow().getDecorView().getRootView().getWindowToken(), 0);
-        }
-    }
 
     public void showImageAlert() {
         String[] imageChoice = new String[2];

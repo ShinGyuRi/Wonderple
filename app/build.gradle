@@ -17,7 +17,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
+
+def qbSdkVersion = '3.3.0'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -25,6 +31,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:25.1.0'
+    compile 'com.android.support:design:25.1.0'
     testCompile 'junit:junit:4.12'
 
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
@@ -41,9 +48,16 @@ dependencies {
     compile 'ch.acra:acra:4.8.1'
 
     compile 'com.google.firebase:firebase-messaging:10.0.1'
+    compile 'com.google.android.gms:play-services:10.0.1'
 
 
     compile 'org.greenrobot:eventbus:3.0.0'
+
+
+    // 카카오 로그인 sdk를 사용하기 위해 필요.
+    compile group: 'com.kakao.sdk', name: 'usermgmt', version: project.KAKAO_SDK_VERSION
+
+
 }
 
 apply plugin: 'com.google.gms.google-services'

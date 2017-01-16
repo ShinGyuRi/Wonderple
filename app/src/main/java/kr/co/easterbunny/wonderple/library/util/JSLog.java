@@ -11,9 +11,9 @@ import kr.co.easterbunny.wonderple.library.BaseApplication;
  * Created by scona on 2017-01-12.
  */
 
-public class JLog {
+public class JSLog {
 
-    public static String TAG = JLog.class.getSimpleName();
+    public static String TAG = JSLog.class.getSimpleName();
 
     public static final int MODE_DEBUG = 2;
     public static final int MODE_RELEASE = 0;

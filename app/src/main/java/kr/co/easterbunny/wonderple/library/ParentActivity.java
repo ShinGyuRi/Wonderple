@@ -64,18 +64,6 @@ public class ParentActivity extends AppCompatActivity {
         this.takePickerListener = listener;
     }
 
-    public void hiddenKeyboard() {
-        if (inputManager == null)
-            inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (inputManager.isActive()) {
-            inputManager.hideSoftInputFromWindow(getWindow().getDecorView().getRootView().getWindowToken(), 0);
-        }
-    }
-
-    public void showKeyboard(View view) {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(view, InputMethodManager.SHOW_FORCED);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
