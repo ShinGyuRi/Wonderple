@@ -31,7 +31,7 @@ public class SplashActivity extends ParentActivity {
         Util.runDelay(2000, new Runnable() {
             @Override
             public void run() {
-                moveLoginActivity();
+                moveMainActivity();
             }
         });
     }
@@ -72,6 +72,7 @@ public class SplashActivity extends ParentActivity {
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        this.finish();
 
     }
 }

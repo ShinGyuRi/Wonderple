@@ -14,6 +14,8 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import kr.co.easterbunny.wonderple.R;
+import kr.co.easterbunny.wonderple.library.BaseApplication;
 import kr.co.easterbunny.wonderple.model.HttpService;
 import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
@@ -32,7 +34,7 @@ public class NetworkUtil {
     public static final int CONNECT_TIMEOUT = 15;
     public static final int WRITE_TIMEOUT = 15;
     public static final int READ_TIMEOUT = 15;
-    private static final String SERVER_URL = "https://api.server.net/"; //2부터 url뒤에 /를 입력해야 합니다.
+    private static final String SERVER_URL = BaseApplication.getContext().getResources().getString(R.string.API_SERVER); //2부터 url뒤에 /를 입력해야 합니다.
     private static OkHttpClient client;
     private static HttpService httpService;
 
@@ -51,6 +53,7 @@ public class NetworkUtil {
             //쿠키 매니저의 cookie policy를 변경
             CookieManager cookieManager = new CookieManager();
             cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+
 
 
             //OkHttpClient 생성
@@ -89,7 +92,10 @@ public class NetworkUtil {
 
             @Override
             public X509Certificate[] getAcceptedIssuers() {
-                return null;
+
+                X509Certificate[] x509Certificates = new X509Certificate[0];
+                return x509Certificates;
+
             }
         }};
 

@@ -26,9 +26,9 @@ public class WonderpleLib
 
     SignInResult currentUser;
 
-    public static final String LOGIN_TYPE_TILTCODE = "TiltCodeUser";
+    public static final String LOGIN_TYPE_WONDERPLE = "WonderpleUser";
     public static final String LOGIN_TYPE_FACEBOOK_USER = "FacebookUser";
-    public static final String LOGIN_TYPE_GUEST = "Guest";
+    public static final String LOGIN_TYPE_KAKAO = "KakaoUser";
 
 
 
@@ -251,11 +251,11 @@ public class WonderpleLib
         }
         else if(currentUser.user.username != null  && !"".equals(currentUser.user.username))
         {
-            return LOGIN_TYPE_TILTCODE;
+            return LOGIN_TYPE_WONDERPLE;
         }
         else if(currentUser.user.udid != null  && !"".equals(currentUser.user.udid))
         {
-            return LOGIN_TYPE_GUEST;
+            return LOGIN_TYPE_KAKAO;
         }
         return "";
     }

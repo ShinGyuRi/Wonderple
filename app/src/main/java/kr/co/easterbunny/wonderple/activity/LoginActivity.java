@@ -1,23 +1,16 @@
 package kr.co.easterbunny.wonderple.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.provider.Settings;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.kakao.auth.AuthType;
@@ -28,8 +21,6 @@ import com.kakao.usermgmt.callback.MeResponseCallback;
 import com.kakao.usermgmt.response.model.UserProfile;
 import com.kakao.util.exception.KakaoException;
 import com.kakao.util.helper.TalkProtocol;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,46 +32,47 @@ import kr.co.easterbunny.wonderple.R;
 import kr.co.easterbunny.wonderple.databinding.ActivityLoginBinding;
 import kr.co.easterbunny.wonderple.library.ParentActivity;
 import kr.co.easterbunny.wonderple.library.util.Definitions.ACTIVITY_REQUEST_CODE;
-import kr.co.easterbunny.wonderple.library.util.Definitions.AUTH_CHANNEL;
 import kr.co.easterbunny.wonderple.library.util.JSLog;
+import kr.co.easterbunny.wonderple.library.util.NetworkUtil;
 import kr.co.easterbunny.wonderple.sdk.KakaoSessionCallbackListener;
 import kr.co.easterbunny.wonderple.sdk.SessionCallback;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class LoginActivity extends ParentActivity implements View.OnClickListener, KakaoSessionCallbackListener{
+public class LoginActivity extends ParentActivity implements KakaoSessionCallbackListener {
 
 
     public static final String TAG = LoginActivity.class.getSimpleName();
 
 
-
-    private ActivityLoginBinding mBinding;
-
-
+    private ActivityLoginBinding binding;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
-        mBinding.btnFacebookLogin.setOnClickListener(this);
-        mBinding.btnKakaoLogin.setOnClickListener(this);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
+        binding.setLogin(this);
     }
 
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId())  {
+    public void login(View v) {
+        switch (v.getId()) {
             case R.id.btn_facebookLogin:
                 facebookLogin();
                 break;
             case R.id.btn_kakaoLogin:
                 kakaoLogin();
                 break;
+            case R.id.btn_emailLogin:
+                emailLogin();
+                break;
         }
     }
 
 
-    /***************************
+    /***************************************
      * Facebook 로그인
      ***************************************/
     private CallbackManager callbackManager;
@@ -88,41 +80,37 @@ public class LoginActivity extends ParentActivity implements View.OnClickListene
     private String facebookImagePath = null;
     private String facebookName = null;
     private String facebookEmail = null;
+
+
     public void facebookLogin() {
 
+        LoginManager.getInstance().logOut();
 
-
-        List<String> permissionNeeds= Arrays.asList("public_profile", "email", "user_birthday", "user_friends");
-        LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this,permissionNeeds);
+        List<String> permissionNeeds = Arrays.asList("public_profile", "email", "user_birthday", "user_friends");
+        LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, permissionNeeds);
 
         callbackManager = CallbackManager.Factory.create();
 
-        LoginManager.getInstance().registerCallback(callbackManager,new FacebookCallback<LoginResult>() {
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
-            public void onSuccess(LoginResult loginResult)
-            {
+            public void onSuccess(LoginResult loginResult) {
 
                 String myInfoString = String.valueOf(loginResult);
 
-                Log.d("JIN","페이스북 로그인 성공! ");
-                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback()
-                {
+                Log.d("JIN", "페이스북 로그인 성공! ");
+                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject json, GraphResponse response) {
 
-                        if (response.getError() != null)
-                        {
+                        if (response.getError() != null) {
                             // handle error
-                            Log.d("JIN","facebook 그래프 API 내 정보 가져오기 에러 : "+response.getError().getErrorMessage());
-                        }
-                        else
-                        {
-                            Log.d("JIN","페이스북 정보 가져오기 성공!!");
-                            try
-                            {
+                            Log.d("JIN", "facebook 그래프 API 내 정보 가져오기 에러 : " + response.getError().getErrorMessage());
+                        } else {
+                            Log.d("JIN", "페이스북 정보 가져오기 성공!!");
+                            try {
 
                                 String jsonresult = String.valueOf(json);
-                                Log.d("JIN","페이스북 로그인 결과 JSON -> String ----> "+jsonresult);
+                                Log.d("JIN", "페이스북 로그인 결과 JSON -> String ----> " + jsonresult);
 
 
                                 String str_email = json.getString("email");
@@ -131,14 +119,8 @@ public class LoginActivity extends ParentActivity implements View.OnClickListene
                                 String str_lastname = json.getString("last_name");
 
 
-
-
                                 /// 페이스북 로그인 및 개인정보 가져오기 성공 --> 프로필 이미지 다운로드 후 사인업 필요
-                                final String facebook_user_profile_image_url = "http://graph.facebook.com/"+str_id+"/picture?type=large";
-
-
-
-
+                                final String facebook_user_profile_image_url = "http://graph.facebook.com/" + str_id + "/picture?type=large";
 
 
                                 facebookEmail = str_email;
@@ -147,12 +129,7 @@ public class LoginActivity extends ParentActivity implements View.OnClickListene
                                 facebookImagePath = facebook_user_profile_image_url;
 
 
-
-
                                 facebookLoginCheck();
-
-
-
 
 
                             } catch (JSONException e) {
@@ -191,7 +168,6 @@ public class LoginActivity extends ParentActivity implements View.OnClickListene
     }
 
 
-
     /**********************************************
      * 카카오톡 로그인
      **********************************************/
@@ -218,7 +194,6 @@ public class LoginActivity extends ParentActivity implements View.OnClickListene
         callBack = new SessionCallback(this);
         Session.getCurrentSession().addCallback(callBack);
         Session.getCurrentSession().checkAndImplicitOpen();
-
 
 
         if (Session.getCurrentSession().isOpened()) {
@@ -276,6 +251,33 @@ public class LoginActivity extends ParentActivity implements View.OnClickListene
     }
 
 
+    /**********************************************
+     * 이메일 로그인
+     **********************************************/
+    private String email;
+    private String type;
+    private String password;
+
+
+    //테스트중
+    public void emailLogin() {
+        Call<String> stringCall = NetworkUtil.getInstace().loginCheckEmail("jin@easterbunny.co.kr", "email", "EF797C8118F02DFB649607DD5D3F8C7623048C9C063D532CC95C5ED7A898A64F");
+        stringCall.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                JSLog.D(new Throwable());
+                String callback = response.body();
+                JSLog.E(callback, null);
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                JSLog.D(new Throwable());
+            }
+        });
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
@@ -296,6 +298,6 @@ public class LoginActivity extends ParentActivity implements View.OnClickListene
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (callBack != null)   Session.getCurrentSession().removeCallback(callBack);
+        if (callBack != null) Session.getCurrentSession().removeCallback(callBack);
     }
 }
