@@ -25,6 +25,11 @@
         <!-- /API KEY -->
 
 
+        <meta-data
+            android:name="kr.co.easterbunny.wonderple.library.util.ui.GlideConfiguration"
+            android:value="GlideModule"/>
+
+
 
 
         <activity android:name=".activity.SplashActivity">

@@ -4,7 +4,7 @@
 
 
     <data>
-        <variable name="Login" type="kr.co.easterbunny.wonderple.activity.LoginActivity"/>
+        <variable name="login" type="kr.co.easterbunny.wonderple.activity.LoginActivity"/>
     </data>
 
 
@@ -25,21 +25,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Facebook login"
-            android:onClick="@{Login.login}"/>
+            android:onClick="@{login.login}"/>
 
         <Button
             android:id="@+id/btn_kakaoLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Kakao Login"
-            android:onClick="@{Login.login}"/>
+            android:onClick="@{login.login}"/>
 
         <Button
             android:id="@+id/btn_emailLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Email Login"
-            android:onClick="@{Login.login}"/>
+            android:onClick="@{login.login}"/>
 
     </LinearLayout>
 

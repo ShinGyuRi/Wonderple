@@ -4,10 +4,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
+    <data>
+        <variable name="switchContent" type="kr.co.easterbunny.wonderple.activity.MainActivity"/>
+    </data>
+
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
         tools:context="kr.co.easterbunny.wonderple.activity.MainActivity">
 
 
@@ -32,17 +37,47 @@
 
 
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/quickreturn_background"
-            android:gravity="center"
-            android:padding="16dp"
+            android:layout_height="48dp"
+            android:weightSum="5"
+            android:orientation="horizontal"
+            android:background="@color/colorPrimaryDark"
             android:layout_gravity="bottom"
-            android:textColor="@android:color/white"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:text="QuickReturn Footer"
-            app:layout_behavior="kr.co.easterbunny.wonderple.library.util.ui.QuickReturnFooterBehavior"/>
+            android:id="@+id/linearLayout"
+            app:layout_behavior="kr.co.easterbunny.wonderple.library.util.ui.QuickReturnFooterBehavior">
+
+            <FrameLayout
+                android:id="@+id/btn_home"
+                android:onClick="@{switchContent.bottomBtnClick}"
+                style="@style/MainButton"></FrameLayout>
+
+
+            <FrameLayout
+                android:id="@+id/btn_curation"
+                android:onClick="@{switchContent.bottomBtnClick}"
+                style="@style/MainButton"></FrameLayout>
+
+
+            <FrameLayout
+                android:id="@+id/layout_btn_camera"
+                android:onClick="@{switchContent.bottomBtnClick}"
+                style="@style/MainButton"></FrameLayout>
+
+
+            <FrameLayout
+                android:id="@+id/layout_btn_coupon"
+                android:onClick="@{switchContent.bottomBtnClick}"
+                style="@style/MainButton"></FrameLayout>
+
+
+            <FrameLayout
+                android:id="@+id/layout_btn_chat"
+                android:onClick="@{switchContent.bottomBtnClick}"
+                style="@style/MainButton"></FrameLayout>
+
+
+        </LinearLayout>
 
     </android.support.design.widget.CoordinatorLayout>
 

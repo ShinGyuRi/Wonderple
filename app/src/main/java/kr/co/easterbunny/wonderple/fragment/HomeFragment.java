@@ -1,6 +1,7 @@
 package kr.co.easterbunny.wonderple.fragment;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.Arrays;
+import java.util.Stack;
 
 import kr.co.easterbunny.wonderple.R;
 import kr.co.easterbunny.wonderple.adapter.PostImageRecyclerViewAdapter;
@@ -28,7 +30,6 @@ public class HomeFragment extends ParentFragment {
 
 
     private FragmentHomeBinding binding;
-
 
 
 
@@ -54,7 +55,7 @@ public class HomeFragment extends ParentFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         binding = FragmentHomeBinding.bind(getView());
-        binding.recyclerviewPostImage.setAdapter(new PostImageRecyclerViewAdapter(Arrays.asList(Cheeses.sCheeseStrings)));
+        binding.recyclerviewPostImage.setAdapter(new PostImageRecyclerViewAdapter(getContext(), Arrays.asList(Cheeses.postImage), Arrays.asList(Cheeses.sCheeseStrings)));
         binding.recyclerviewPostImage.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 

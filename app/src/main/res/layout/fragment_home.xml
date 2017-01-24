@@ -4,6 +4,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
         tools:context="kr.co.easterbunny.wonderple.fragment.HomeFragment">
 
         <!-- TODO: Update blank fragment layout -->

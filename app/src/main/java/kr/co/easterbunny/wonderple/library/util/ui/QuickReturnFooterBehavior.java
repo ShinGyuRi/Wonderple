@@ -59,7 +59,6 @@ public class QuickReturnFooterBehavior extends CoordinatorLayout.Behavior<View> 
         }
 
         mDySinceDirectionChange += dy;
-        JSLog.D(String.valueOf(mDySinceDirectionChange), new Throwable());
 
         if (mDySinceDirectionChange > child.getHeight()
                 && child.getVisibility() == View.VISIBLE
