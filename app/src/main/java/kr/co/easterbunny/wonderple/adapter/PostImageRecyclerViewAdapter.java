@@ -1,6 +1,8 @@
 package kr.co.easterbunny.wonderple.adapter;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,12 +17,13 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import kr.co.easterbunny.wonderple.R;
+import kr.co.easterbunny.wonderple.databinding.PostListItemBinding;
 
 /**
  * Created by scona on 2017-01-19.
  */
 
-public class PostImageRecyclerViewAdapter extends RecyclerView.Adapter<PostImageRecyclerViewAdapter.ViewHolder> {
+public class PostImageRecyclerViewAdapter extends RecyclerView.Adapter<PostImageRecyclerViewAdapter.BindingHolder> {
 
 
     private List<Integer> posts;
@@ -28,24 +31,22 @@ public class PostImageRecyclerViewAdapter extends RecyclerView.Adapter<PostImage
 
     private Context context;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+
+    public class BindingHolder extends RecyclerView.ViewHolder  {
+        private final PostListItemBinding binding;
+
         public String mBoundString;
 
-        public final View mView;
-        public final ImageView imgPost;
-        public final TextView txtUsername;
-
-        public ViewHolder(View view) {
+        public BindingHolder(View view) {
             super(view);
-            mView = view;
-            imgPost = (ImageView) view.findViewById(R.id.img_post) ;
-            txtUsername = (TextView) view.findViewById(R.id.txt_username);
+            binding = DataBindingUtil.bind(view);
         }
 
-        @Override
-        public String toString() {
-            return super.toString() + " '" + txtUsername.getText();
+        public ViewDataBinding getBinding() {
+            return binding;
         }
+        
     }
 
 
@@ -56,21 +57,22 @@ public class PostImageRecyclerViewAdapter extends RecyclerView.Adapter<PostImage
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BindingHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.post_list_item, parent, false);
-        return new ViewHolder(view);
+        return new BindingHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(PostImageRecyclerViewAdapter.BindingHolder holder, int position) {
         holder.mBoundString = items.get(position);
         Glide.with(context)
                 .load(posts.get(position))
                 .thumbnail(0.1f)
-                .into(holder.imgPost);
-        holder.txtUsername.setText(items.get(position));
+                .into(holder.binding.imgPost);
+        holder.binding.txtUsername.setText(items.get(position));
     }
+
 
     @Override
     public int getItemCount() {

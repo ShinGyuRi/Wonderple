@@ -62,7 +62,7 @@ public class CurationFragment extends Fragment implements AbsListView.OnScrollLi
 
 
         if (adapter == null) {
-            adapter = new CurationGridAdapter(getActivity(), R.id.image);
+            adapter = new CurationGridAdapter(getActivity(), R.id.post_image);
         }
 
         if (mData == null) {

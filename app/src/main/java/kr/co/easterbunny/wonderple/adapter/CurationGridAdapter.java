@@ -1,6 +1,7 @@
 package kr.co.easterbunny.wonderple.adapter;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import kr.co.easterbunny.wonderple.R;
+import kr.co.easterbunny.wonderple.databinding.ListItemImageBinding;
 import kr.co.easterbunny.wonderple.library.util.JSLog;
 
 /**
@@ -52,16 +54,17 @@ public class CurationGridAdapter extends ArrayAdapter<String> {
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
 
-        ViewHolder vh;
-        if (convertView == null) {
-            convertView = mLayoutInflater.inflate(R.layout.list_item_image, parent, false);
-            vh = new ViewHolder();
-            vh.txtLineOne = (DynamicHeightTextView) convertView.findViewById(R.id.image);
 
-            convertView.setTag(vh);
+        ListItemImageBinding binding;
+
+        if (convertView == null) {
+
+            binding = DataBindingUtil.inflate(mLayoutInflater, R.layout.list_item_image, parent, false);
+            convertView = binding.getRoot();
+            convertView.setTag(binding);
         }
         else {
-            vh = (ViewHolder) convertView.getTag();
+            binding = (ListItemImageBinding) convertView.getTag();
         }
 
         double positionHeight = getPositionRatio(position);
@@ -72,8 +75,8 @@ public class CurationGridAdapter extends ArrayAdapter<String> {
 
         JSLog.D("getView position:" + position + " h:" + positionHeight, new Throwable());
 
-        vh.txtLineOne.setHeightRatio(positionHeight);
-        vh.txtLineOne.setText(getItem(position) + position);
+        binding.postImage.setHeightRatio(positionHeight);
+        binding.postImage.setText(getItem(position) + position);
 
 
         return convertView;
