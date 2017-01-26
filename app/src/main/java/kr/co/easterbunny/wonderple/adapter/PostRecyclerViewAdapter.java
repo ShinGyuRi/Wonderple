@@ -7,12 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -23,7 +19,7 @@ import kr.co.easterbunny.wonderple.databinding.PostListItemBinding;
  * Created by scona on 2017-01-19.
  */
 
-public class PostImageRecyclerViewAdapter extends RecyclerView.Adapter<PostImageRecyclerViewAdapter.BindingHolder> {
+public class PostRecyclerViewAdapter extends RecyclerView.Adapter<PostRecyclerViewAdapter.BindingHolder> {
 
 
     private List<Integer> posts;
@@ -50,7 +46,7 @@ public class PostImageRecyclerViewAdapter extends RecyclerView.Adapter<PostImage
     }
 
 
-    public PostImageRecyclerViewAdapter(Context context, List<Integer> posts, List<String> items) {
+    public PostRecyclerViewAdapter(Context context, List<Integer> posts, List<String> items) {
         this.context = context;
         this.posts = posts;
         this.items = items;
@@ -64,7 +60,7 @@ public class PostImageRecyclerViewAdapter extends RecyclerView.Adapter<PostImage
     }
 
     @Override
-    public void onBindViewHolder(PostImageRecyclerViewAdapter.BindingHolder holder, int position) {
+    public void onBindViewHolder(PostRecyclerViewAdapter.BindingHolder holder, int position) {
         holder.mBoundString = items.get(position);
         Glide.with(context)
                 .load(posts.get(position))

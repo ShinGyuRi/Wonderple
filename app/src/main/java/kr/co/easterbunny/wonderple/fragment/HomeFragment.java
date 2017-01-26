@@ -1,26 +1,20 @@
 package kr.co.easterbunny.wonderple.fragment;
 
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.Arrays;
-import java.util.Stack;
 
 import kr.co.easterbunny.wonderple.R;
-import kr.co.easterbunny.wonderple.adapter.PostImageRecyclerViewAdapter;
+import kr.co.easterbunny.wonderple.adapter.PostRecyclerViewAdapter;
 import kr.co.easterbunny.wonderple.databinding.FragmentHomeBinding;
-import kr.co.easterbunny.wonderple.library.BaseApplication;
 import kr.co.easterbunny.wonderple.library.ParentFragment;
-import kr.co.easterbunny.wonderple.library.util.ui.QuickReturnFooterBehavior;
 import kr.co.easterbunny.wonderple.model.Cheeses;
 
 /**
@@ -55,7 +49,7 @@ public class HomeFragment extends ParentFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         binding = FragmentHomeBinding.bind(getView());
-        binding.recyclerviewPostImage.setAdapter(new PostImageRecyclerViewAdapter(getContext(), Arrays.asList(Cheeses.postImage), Arrays.asList(Cheeses.sCheeseStrings)));
+        binding.recyclerviewPostImage.setAdapter(new PostRecyclerViewAdapter(getContext(), Arrays.asList(Cheeses.postImage), Arrays.asList(Cheeses.sCheeseStrings)));
         binding.recyclerviewPostImage.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 

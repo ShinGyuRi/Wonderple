@@ -9,7 +9,7 @@ import android.view.View;
 
 import kr.co.easterbunny.wonderple.R;
 import kr.co.easterbunny.wonderple.databinding.ActivityMainBinding;
-import kr.co.easterbunny.wonderple.fragment.CurationFragment;
+import kr.co.easterbunny.wonderple.fragment.SearchFragment;
 import kr.co.easterbunny.wonderple.fragment.HomeFragment;
 import kr.co.easterbunny.wonderple.library.ParentActivity;
 import kr.co.easterbunny.wonderple.library.util.JSLog;
@@ -57,7 +57,7 @@ public class MainActivity extends ParentActivity {
             case R.id.btn_curation:
                 initNaviButton(v);
                 if (curationFragment == null)
-                    curationFragment = CurationFragment.newInstance();
+                    curationFragment = SearchFragment.newInstance();
                 switchContent(curationFragment, "CURATION");
                 break;
         }
@@ -74,18 +74,15 @@ public class MainActivity extends ParentActivity {
         FragmentManager fm = getSupportFragmentManager();
 
         JSLog.D("back stack cnt:" + fm.getBackStackEntryCount(),new Throwable());
-//        for (Fragment fragment1 : fm.getFragments()) {
-//            if (fragment1 != null && fragment1.getTag().equals(tag)) {
-//                //이렇게 해도 직전 프래그먼트만 pop됨 ㅡㅡ
-//                boolean result = fm.popBackStackImmediate(tag,FragmentManager.POP_BACK_STACK_INCLUSIVE);
-//                JSLog.D(tag +" , rst:"+result + ","+fm.getBackStackEntryCount(),new Throwable());
-//                break;
-//            }
-//        }
 
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.addToBackStack(tag);
-        ft.replace(R.id.container, fragment, tag).commit();
+        boolean fragmentPopped = fm.popBackStackImmediate(tag, 0);
+
+        if (!fragmentPopped) {
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.addToBackStack(tag);
+            ft.replace(R.id.container, fragment, tag).commit();
+        }
+
     }
 
 

@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
 import android.view.animation.Interpolator;
+import android.widget.ImageView;
 
 import kr.co.easterbunny.wonderple.library.util.JSLog;
 
@@ -33,6 +34,16 @@ public class QuickReturnFooterBehavior extends CoordinatorLayout.Behavior<View> 
         super(context, attrs);
     }
 
+
+    @Override
+    public boolean layoutDependsOn(CoordinatorLayout parent, View child, View dependency) {
+        return dependency instanceof ImageView;
+    }
+
+    @Override
+    public boolean onDependentViewChanged(CoordinatorLayout parent, View child, View dependency) {
+        return true;
+    }
 
     @Override
     public boolean onStartNestedScroll(CoordinatorLayout coordinatorLayout, View child, View directTargetChild, View target, int nestedScrollAxes) {

@@ -8,9 +8,10 @@
         android:id="@+id/panel_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="@dimen/cardview_default_radius"
         android:descendantFocusability="blocksDescendants">
 
-        <com.etsy.android.grid.util.DynamicHeightTextView
+        <com.etsy.android.grid.util.DynamicHeightImageView
             android:id="@+id/post_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
