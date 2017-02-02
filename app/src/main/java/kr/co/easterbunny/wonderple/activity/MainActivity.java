@@ -1,5 +1,6 @@
 package kr.co.easterbunny.wonderple.activity;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -34,9 +35,7 @@ public class MainActivity extends ParentActivity {
         binding.setSwitchContent(this);
 
 
-        homeFragment = HomeFragment.newInstance();
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment, "HOME").addToBackStack("HOME").commit();
-        binding.btnHome.setEnabled(false);
+        setFrag();
     }
 
 
@@ -44,6 +43,12 @@ public class MainActivity extends ParentActivity {
     protected void onResume() {
         super.onResume();
         getSupportFragmentManager().addOnBackStackChangedListener(backStackChangedListener);
+    }
+
+    public void setFrag()  {
+        homeFragment = HomeFragment.newInstance();
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment, "HOME").addToBackStack("HOME").commit();
+        binding.btnHome.setEnabled(false);
     }
 
     public void bottomBtnClick(View v) {
@@ -59,6 +64,9 @@ public class MainActivity extends ParentActivity {
                 if (curationFragment == null)
                     curationFragment = SearchFragment.newInstance();
                 switchContent(curationFragment, "CURATION");
+                break;
+            case R.id.btn_camera:
+                startActivity(new Intent(this, CameraActivity.class));
                 break;
         }
     }

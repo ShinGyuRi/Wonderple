@@ -15,12 +15,13 @@ import kr.co.easterbunny.wonderple.R;
 import kr.co.easterbunny.wonderple.adapter.PostRecyclerViewAdapter;
 import kr.co.easterbunny.wonderple.adapter.SearchRecyclerViewAdapter;
 import kr.co.easterbunny.wonderple.databinding.FragmentSearchBinding;
+import kr.co.easterbunny.wonderple.library.ParentFragment;
 import kr.co.easterbunny.wonderple.model.Cheeses;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SearchFragment extends Fragment {
+public class SearchFragment extends ParentFragment {
 
 
     private FragmentSearchBinding binding;

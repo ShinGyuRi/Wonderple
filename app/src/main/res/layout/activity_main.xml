@@ -60,7 +60,7 @@
 
 
             <FrameLayout
-                android:id="@+id/layout_btn_camera"
+                android:id="@+id/btn_camera"
                 android:onClick="@{switchContent.bottomBtnClick}"
                 style="@style/MainButton"></FrameLayout>
 
