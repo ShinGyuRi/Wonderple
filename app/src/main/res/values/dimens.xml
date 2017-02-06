@@ -4,4 +4,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     
     <dimen name="between_image">1dp</dimen>
+
+    <dimen name="guideline_thickness">3px</dimen>
 </resources>

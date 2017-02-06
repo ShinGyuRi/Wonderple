@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <kr.co.easterbunny.wonderple.view.SquareFrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-        android:padding="@dimen/between_image"
-        android:animateLayoutChanges="true">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <kr.co.easterbunny.wonderple.view.SquareImageView
-            android:id="@+id/img_mediaThumb"
+            android:id="@+id/mMediaThumb"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/app_name"
-            android:layout_gravity="center"/>
+            android:scaleType="centerCrop"/>
 
     </kr.co.easterbunny.wonderple.view.SquareFrameLayout>
 </layout>

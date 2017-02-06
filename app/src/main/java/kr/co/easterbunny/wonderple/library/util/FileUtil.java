@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.channels.FileChannel;
+import java.util.concurrent.TimeUnit;
 
 import kr.co.easterbunny.wonderple.library.BaseApplication;
 
@@ -398,4 +399,19 @@ public class FileUtil {
         return byteArray;
     }
 
+
+    private static final String DIR_YUMMYPETS = "/wonderple";
+
+    public static File getLocalDir() {
+        return new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                DIR_YUMMYPETS);
+    }
+
+    public static String getNewFilePath() {
+        return getLocalDir().getAbsolutePath() + "/" + getNewFileName();
+    }
+
+    private static String getNewFileName() {
+        return "yummypets_" + TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()) + ".jpg";
+    }
 }

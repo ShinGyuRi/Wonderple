@@ -80,7 +80,7 @@ public class GalleryRecyclerViewAdapter extends RecyclerView.Adapter<GalleryRecy
                     .thumbnail(0.1f)
                     .dontAnimate()
                     .centerCrop()
-                    .into(holder.binding.imgMediaThumb);
+                    .into(holder.binding.mMediaThumb);
 
             holder.uri = mUri;
         }

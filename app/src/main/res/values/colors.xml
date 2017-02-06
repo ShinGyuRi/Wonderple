@@ -5,15 +5,9 @@
     <color name="colorAccent">#FF4081</color>
 
 
-
-    <color name="quickreturn_background">#689F38</color>
-
+    <color name="guideline">#4DFFFFFF</color>
 
 
-    <color name="orange">#ffffdc7e</color>
-    <color name="grey">#ffd3d3d3</color>
-    <color name="green">#ff8dd304</color>
-    <color name="blue">#ff82e0ff</color>
-    <color name="yellow">#fffffbae</color>
-    <color name="red">#fff10800</color>
+    <color name="red_error">#C86A6A</color>
+    <color name="egg_shell">#EFEEED</color>
 </resources>
