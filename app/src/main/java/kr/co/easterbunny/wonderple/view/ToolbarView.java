@@ -1,4 +1,4 @@
-package kr.co.easterbunny.wonderple.library.util.ui;
+package kr.co.easterbunny.wonderple.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
