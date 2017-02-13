@@ -27,6 +27,11 @@
 
     <string name="gallery_no_media_found">No media found</string>
 
+    <string name="toolbar_bt_next">Next</string>
+    <string name="toolbar_title_editor">Editor</string>
+    <!--ICON-->
+    <string name="icon_back_md" translatable="false">Z</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

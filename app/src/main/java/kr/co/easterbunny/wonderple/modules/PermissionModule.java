@@ -1,4 +1,4 @@
-package kr.co.easterbunny.wonderple.library.util;
+package kr.co.easterbunny.wonderple.modules;
 
 import android.Manifest;
 import android.app.Activity;

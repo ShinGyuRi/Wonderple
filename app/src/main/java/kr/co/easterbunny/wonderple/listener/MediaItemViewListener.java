@@ -1,7 +1,7 @@
 package kr.co.easterbunny.wonderple.listener;
 
-import java.io.File;
+import android.net.Uri;
 
 public interface MediaItemViewListener {
-    void onClickItem(File file);
+    void onClickItem(Uri uri);
 }

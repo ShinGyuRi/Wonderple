@@ -13,13 +13,13 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import kr.co.easterbunny.wonderple.R;
-import kr.co.easterbunny.wonderple.databinding.PostListItemBinding;
+import kr.co.easterbunny.wonderple.databinding.ViewPostItemBinding;
 
 /**
  * Created by scona on 2017-01-19.
  */
 
-public class PostRecyclerViewAdapter extends RecyclerView.Adapter<PostRecyclerViewAdapter.BindingHolder> {
+public class PostAdapter extends RecyclerView.Adapter<PostAdapter.BindingHolder> {
 
 
     private List<Integer> posts;
@@ -30,7 +30,7 @@ public class PostRecyclerViewAdapter extends RecyclerView.Adapter<PostRecyclerVi
 
 
     public class BindingHolder extends RecyclerView.ViewHolder  {
-        private final PostListItemBinding binding;
+        private final ViewPostItemBinding binding;
 
         public String mBoundString;
 
@@ -46,7 +46,7 @@ public class PostRecyclerViewAdapter extends RecyclerView.Adapter<PostRecyclerVi
     }
 
 
-    public PostRecyclerViewAdapter(Context context, List<Integer> posts, List<String> items) {
+    public PostAdapter(Context context, List<Integer> posts, List<String> items) {
         this.context = context;
         this.posts = posts;
         this.items = items;
@@ -55,12 +55,12 @@ public class PostRecyclerViewAdapter extends RecyclerView.Adapter<PostRecyclerVi
     @Override
     public BindingHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.post_list_item, parent, false);
+                .inflate(R.layout.view_post_item, parent, false);
         return new BindingHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(PostRecyclerViewAdapter.BindingHolder holder, int position) {
+    public void onBindViewHolder(PostAdapter.BindingHolder holder, int position) {
         holder.mBoundString = items.get(position);
         Glide.with(context)
                 .load(posts.get(position))

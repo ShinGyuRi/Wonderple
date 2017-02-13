@@ -12,8 +12,7 @@ import android.view.ViewGroup;
 import java.util.Arrays;
 
 import kr.co.easterbunny.wonderple.R;
-import kr.co.easterbunny.wonderple.adapter.PostRecyclerViewAdapter;
-import kr.co.easterbunny.wonderple.adapter.SearchRecyclerViewAdapter;
+import kr.co.easterbunny.wonderple.adapter.SearchAdapter;
 import kr.co.easterbunny.wonderple.databinding.FragmentSearchBinding;
 import kr.co.easterbunny.wonderple.library.ParentFragment;
 import kr.co.easterbunny.wonderple.model.Cheeses;
@@ -56,7 +55,7 @@ public class SearchFragment extends ParentFragment {
 
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, 1);
         binding.rvPostImage.setLayoutManager(staggeredGridLayoutManager);
-        binding.rvPostImage.setAdapter(new SearchRecyclerViewAdapter(getContext(), Arrays.asList(Cheeses.postImage)));
+        binding.rvPostImage.setAdapter(new SearchAdapter(getContext(), Arrays.asList(Cheeses.postImage)));
     }
 
 

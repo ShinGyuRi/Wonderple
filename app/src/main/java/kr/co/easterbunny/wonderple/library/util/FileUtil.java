@@ -412,6 +412,6 @@ public class FileUtil {
     }
 
     private static String getNewFileName() {
-        return "yummypets_" + TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()) + ".jpg";
+        return "wonderple_" + TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()) + ".jpg";
     }
 }

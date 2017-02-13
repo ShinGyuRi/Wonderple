@@ -6,24 +6,33 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 
 import kr.co.easterbunny.wonderple.R;
 import kr.co.easterbunny.wonderple.adapter.ViewPagerAdapter;
+import kr.co.easterbunny.wonderple.bus.RxBusNext;
 import kr.co.easterbunny.wonderple.databinding.ActivityCameraBinding;
+import kr.co.easterbunny.wonderple.event.ClickNextEvent;
 import kr.co.easterbunny.wonderple.fragment.CapturePhotoFragment;
 import kr.co.easterbunny.wonderple.fragment.GalleryPickerFragment;
 import kr.co.easterbunny.wonderple.library.ParentActivity;
+import kr.co.easterbunny.wonderple.library.util.JSLog;
+import kr.co.easterbunny.wonderple.modules.PermissionModule;
 import kr.co.easterbunny.wonderple.listener.CaturePhotoFragmentListener;
 import kr.co.easterbunny.wonderple.listener.GalleryPickerFragmentListener;
 import kr.co.easterbunny.wonderple.model.SourceType;
+import kr.co.easterbunny.wonderple.view.ToolbarView;
 
-public class CameraActivity extends ParentActivity implements CaturePhotoFragmentListener, GalleryPickerFragmentListener {
+public class CameraActivity extends ParentActivity implements ToolbarView.OnClickTitleListener,
+        ToolbarView.OnClickNextListener, ToolbarView.OnClickBackListener, CaturePhotoFragmentListener, GalleryPickerFragmentListener {
 
     private ActivityCameraBinding binding;
 
     private HashSet<SourceType> mSourceTypeSet = new HashSet<>();
+    private RxBusNext mRxBusNext = RxBusNext.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +46,12 @@ public class CameraActivity extends ParentActivity implements CaturePhotoFragmen
     }
 
     private void initViews()    {
+        PermissionModule permissionModule = new PermissionModule(this);
+        permissionModule.checkPermissions();
+
+        binding.mMainToolbar.setOnClickBackMenuListener(this)
+                .setOnClickTitleListener(this)
+                .setOnClickNextListener(this);
 
         final ViewPagerAdapter pagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), getListFragment());
         binding.mMainViewPager.setAdapter(pagerAdapter);
@@ -68,8 +83,8 @@ public class CameraActivity extends ParentActivity implements CaturePhotoFragmen
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 super.onTabSelected(tab);
-//                displayTitleByTab(tab);
-//                initNextButtonByTab(tab.getPosition());
+                displayTitleByTab(tab);
+                initNextButtonByTab(tab.getPosition());
             }
         };
     }
@@ -77,18 +92,48 @@ public class CameraActivity extends ParentActivity implements CaturePhotoFragmen
     private void displayTitleByTab(TabLayout.Tab tab) {
         if (tab.getText() != null) {
             String title = tab.getText().toString();
+            binding.mMainToolbar.setTitle(title);
         }
     }
 
     private void initNextButtonByTab(int position) {
+        switch (position) {
+            case 0:
+                binding.mMainToolbar.showNext();
+                break;
+            case 1:
+                binding.mMainToolbar.hideNext();
+                break;
+            default:
+                binding.mMainToolbar.hideNext();
+                break;
+        }
     }
 
     private void openPhotoEditor() {
+        JSLog.D("TEST::::::::::::1", new Throwable());
         startActivity(new Intent(this, EditorActivity.class));
     }
 
     @Override
     public void openEditor() {
+        JSLog.D("TEST:::::::::::2", new Throwable());
         openPhotoEditor();
+    }
+
+    @Override
+    public void onClickBack() {
+        onBackPressed();
+    }
+
+    @Override
+    public void onClickNext() {
+//        mRxBusNext.send(true);
+        EventBus.getDefault().post(new ClickNextEvent(true));
+    }
+
+    @Override
+    public void onClickTitle() {
+
     }
 }

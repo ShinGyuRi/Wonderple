@@ -9,6 +9,13 @@
         tools:context="kr.co.easterbunny.wonderple.activity.CameraActivity">
 
 
+        <kr.co.easterbunny.wonderple.view.ToolbarView
+            android:id="@+id/mMainToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:elevation="4dp"/>
+
 
         <android.support.design.widget.TabLayout
             android:id="@+id/mMainTabLayout"
@@ -21,6 +28,7 @@
             android:id="@+id/mMainViewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@id/mMainToolbar"
             android:layout_above="@id/mMainTabLayout"
             android:orientation="horizontal"/>
 

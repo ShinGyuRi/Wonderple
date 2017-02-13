@@ -10,6 +10,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import java.io.IOException;
 
 import kr.co.easterbunny.wonderple.library.gcm.GcmUtil;
+import kr.co.easterbunny.wonderple.library.util.JSLog;
 
 
 /**
@@ -31,10 +32,10 @@ public class RegistrationIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         try {
             token = FirebaseInstanceId.getInstance().getToken();
-            Log.e(TAG, "GCM Registration Token: " + token, new Throwable());
+            JSLog.E(TAG, "GCM Registration Token: " + token, new Throwable());
             sendRegistrationToServer(token);
         } catch (Exception e) {
-            Log.e(TAG, "Failed to complete token refresh " + e.getMessage(), new Throwable());
+            JSLog.E(TAG, "Failed to complete token refresh " + e.getMessage(), new Throwable());
         }
         Intent registrationComplete = new Intent(GcmUtil.REGISTRATION_COMPLETE);
         intent.putExtra("token", token);

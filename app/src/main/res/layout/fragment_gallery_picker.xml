@@ -19,7 +19,7 @@
                 android:minHeight="50dp"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
-                <kr.co.easterbunny.wonderple.library.util.ui.CropImageView
+                <kr.co.easterbunny.wonderple.view.CropImageView
                     android:id="@+id/mPreview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -29,7 +29,7 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <TextView
+        <kr.co.easterbunny.wonderple.view.CustomTextView
             android:id="@+id/mMediaNotFoundWording"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,6 +38,7 @@
             android:textSize="18sp"
             android:text="@string/gallery_no_media_found"
             android:visibility="gone"
+            app:customFont="Roboto-Regular"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
         <android.support.v7.widget.RecyclerView

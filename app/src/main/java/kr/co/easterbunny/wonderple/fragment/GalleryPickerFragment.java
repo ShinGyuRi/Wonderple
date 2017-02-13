@@ -19,6 +19,9 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,36 +29,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 import kr.co.easterbunny.wonderple.R;
-import kr.co.easterbunny.wonderple.adapter.GalleryRecyclerViewAdapter;
-import kr.co.easterbunny.wonderple.bus.RxBusNext;
+import kr.co.easterbunny.wonderple.adapter.GalleryAdapter;
 import kr.co.easterbunny.wonderple.databinding.FragmentGalleryPickerBinding;
+import kr.co.easterbunny.wonderple.event.ClickNextEvent;
 import kr.co.easterbunny.wonderple.library.BaseApplication;
 import kr.co.easterbunny.wonderple.library.ParentFragment;
 import kr.co.easterbunny.wonderple.library.util.FileUtil;
 import kr.co.easterbunny.wonderple.listener.GalleryPickerFragmentListener;
-import kr.co.easterbunny.wonderple.listener.RecyclerViewOnItemClickListener;
+import kr.co.easterbunny.wonderple.listener.GridAdapterListener;
 import kr.co.easterbunny.wonderple.model.Session;
-import rx.functions.Action1;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class GalleryPickerFragment extends ParentFragment {
+public class GalleryPickerFragment extends ParentFragment implements GridAdapterListener{
 
 
     private FragmentGalleryPickerBinding binding;
 
     private GridLayoutManager gridLayoutManager;
-    public static GalleryRecyclerViewAdapter galleryRecyclerViewAdapter;
+    public static GalleryAdapter galleryAdapter;
 
     private GalleryPickerFragmentListener listener;
     private Session mSession = Session.getInstance();
-    private final RxBusNext mRxBus = RxBusNext.getInstance();
 
     private static final int MARGING_GRID = 2;
 
 
-    public static GalleryPickerFragment newInstance()   {
+    public static GalleryPickerFragment newInstance() {
         GalleryPickerFragment frag = new GalleryPickerFragment();
         return frag;
     }
@@ -63,7 +64,7 @@ public class GalleryPickerFragment extends ParentFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        eventBus();
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -87,43 +88,10 @@ public class GalleryPickerFragment extends ParentFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         binding = FragmentGalleryPickerBinding.bind(getView());
-        
 
-        binding.gallery.setHasFixedSize(true);
+        initViews();
 
-        List<Uri> images = getImagesFromGallary(getActivity());
-        galleryRecyclerViewAdapter = new GalleryRecyclerViewAdapter(getContext(), images);
-
-        gridLayoutManager = new GridLayoutManager(getContext(), 3);
-        binding.gallery.setLayoutManager(gridLayoutManager);
-        binding.gallery.setAdapter(galleryRecyclerViewAdapter);
-        binding.gallery.addItemDecoration(addItemDecoration());
-
-        CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) binding.mAppBarContainer.getLayoutParams();
-        lp.height = getResources().getDisplayMetrics().widthPixels;
-        binding.mAppBarContainer.setLayoutParams(lp);
-
-        displayPreview(0);
-        binding.gallery.addOnItemTouchListener(new RecyclerViewOnItemClickListener(getContext(), binding.gallery,
-                new RecyclerViewOnItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View v, int position) {
-                        displayPreview(position);
-                        binding.mAppBarContainer.setExpanded(true, true);
-                    }
-
-                    @Override
-                    public void onItemLongClick(View v, int position) {
-
-                    }
-                }));
-
-        binding.mPreview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                binding.mAppBarContainer.setExpanded(true, true);
-            }
-        });
+        binding.mPreview.setOnClickListener(v -> binding.mAppBarContainer.setExpanded(true, true));
 
     }
 
@@ -131,9 +99,33 @@ public class GalleryPickerFragment extends ParentFragment {
     public void onPause() {
         super.onPause();
         Glide.with(getContext()).pauseRequests();
-        mRxBus.reset();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    private void initViews() {
+        binding.gallery.setHasFixedSize(true);
+
+        galleryAdapter = new GalleryAdapter(getContext());
+        galleryAdapter.setListener(this);
+
+        gridLayoutManager = new GridLayoutManager(getContext(), 3);
+        binding.gallery.setLayoutManager(gridLayoutManager);
+        binding.gallery.setAdapter(galleryAdapter);
+        binding.gallery.addItemDecoration(addItemDecoration());
+        galleryAdapter.setItems(getImagesFromGallary());
+
+        CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) binding.mAppBarContainer.getLayoutParams();
+        lp.height = getResources().getDisplayMetrics().widthPixels;
+        binding.mAppBarContainer.setLayoutParams(lp);
+
+        List<Uri> images = getImagesFromGallary();
+        displayPreview(images.get(0));
+    }
 
 
     private RecyclerView.ItemDecoration addItemDecoration() {
@@ -152,16 +144,11 @@ public class GalleryPickerFragment extends ParentFragment {
     }
 
 
-    private void eventBus() {
-        mRxBus.toObserverable()
-                .subscribe(new Action1<Object>() {
-                    @Override
-                    public void call(Object o) {
-                        mSession.setFileToUpload(saveBitmap(binding.mPreview.getCroppedImage(),
-                                FileUtil.getNewFilePath()));
-                        listener.openEditor();
-                    }
-                });
+    @Subscribe
+    public void eventBus(ClickNextEvent event) {
+        mSession.setFileToUpload(saveBitmap(binding.mPreview.getCroppedImage(),
+                FileUtil.getNewFilePath()));
+        listener.openEditor();
     }
 
 
@@ -194,8 +181,7 @@ public class GalleryPickerFragment extends ParentFragment {
     }
 
 
-
-    public List<Uri> getImagesFromGallary(Context context) {
+    public List<Uri> getImagesFromGallary() {
 
         List<Uri> images = new ArrayList<Uri>();
 
@@ -227,17 +213,22 @@ public class GalleryPickerFragment extends ParentFragment {
     }
 
 
-    private void displayPreview(int position) {
+    private void displayPreview(Uri uri) {
 
-        Uri uri = galleryRecyclerViewAdapter.getItem(position);
+//        Uri uri = galleryAdapter.getItem(position);
 
         Glide.with(getContext())
                 .load(uri.toString())
                 .thumbnail(0.1f)
-                .override(350, 350)
-                .placeholder(R.drawable.placeholder_media)
-                .error(R.drawable.placeholder_error_media)
+                .dontAnimate()
+                .dontTransform()
+                .override(600, 600)
                 .into(binding.mPreview);
     }
 
+    @Override
+    public void onClickMediaItem(Uri uri) {
+        displayPreview(uri);
+        binding.mAppBarContainer.setExpanded(true, true);
+    }
 }

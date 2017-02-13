@@ -15,14 +15,14 @@ import java.util.List;
 import java.util.Random;
 
 import kr.co.easterbunny.wonderple.R;
-import kr.co.easterbunny.wonderple.databinding.ListItemImageBinding;
+import kr.co.easterbunny.wonderple.databinding.ViewStaggeredgridItemBinding;
 import kr.co.easterbunny.wonderple.library.util.JSLog;
 
 /**
  * Created by scona on 2017-01-26.
  */
 
-public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecyclerViewAdapter.BindingHolder> {
+public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.BindingHolder> {
 
     private List<Integer> posts;
 
@@ -35,7 +35,7 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
 
 
     public class BindingHolder extends RecyclerView.ViewHolder  {
-        private final ListItemImageBinding binding;
+        private final ViewStaggeredgridItemBinding binding;
 
         public BindingHolder(View view) {
             super(view);
@@ -49,7 +49,7 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
     }
 
 
-    public SearchRecyclerViewAdapter(Context context, List<Integer> posts) {
+    public SearchAdapter(Context context, List<Integer> posts) {
         this.context = context;
         this.posts = posts;
         mRandom = new Random();
@@ -58,12 +58,12 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
     @Override
     public BindingHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_image, parent, false);
+                .inflate(R.layout.view_staggeredgrid_item, parent, false);
         return new BindingHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(SearchRecyclerViewAdapter.BindingHolder holder, int position) {
+    public void onBindViewHolder(SearchAdapter.BindingHolder holder, int position) {
 
         double positionHeight = getPositionRatio(position);
 

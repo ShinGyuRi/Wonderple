@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import java.util.Arrays;
 
 import kr.co.easterbunny.wonderple.R;
-import kr.co.easterbunny.wonderple.adapter.PostRecyclerViewAdapter;
+import kr.co.easterbunny.wonderple.adapter.PostAdapter;
 import kr.co.easterbunny.wonderple.databinding.FragmentHomeBinding;
 import kr.co.easterbunny.wonderple.library.ParentFragment;
 import kr.co.easterbunny.wonderple.model.Cheeses;
@@ -49,7 +49,7 @@ public class HomeFragment extends ParentFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         binding = FragmentHomeBinding.bind(getView());
-        binding.recyclerviewPostImage.setAdapter(new PostRecyclerViewAdapter(getContext(), Arrays.asList(Cheeses.postImage), Arrays.asList(Cheeses.sCheeseStrings)));
+        binding.recyclerviewPostImage.setAdapter(new PostAdapter(getContext(), Arrays.asList(Cheeses.postImage), Arrays.asList(Cheeses.sCheeseStrings)));
         binding.recyclerviewPostImage.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 

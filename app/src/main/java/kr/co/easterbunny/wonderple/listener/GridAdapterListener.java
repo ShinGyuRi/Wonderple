@@ -1,9 +1,9 @@
 package kr.co.easterbunny.wonderple.listener;
 
-import java.io.File;
+import android.net.Uri;
 
 public interface GridAdapterListener {
 
-    public void onClickMediaItem(File file);
+    void onClickMediaItem(Uri uri);
 
 }

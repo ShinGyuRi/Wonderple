@@ -15,3 +15,12 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-printmapping map.txt
+-printseeds seed.txt
+-printusage usage.txt
+-printconfiguration config.txt
+
+-renamesourcefileattribute SourceFile
+
+-keepattributes SourceFile,LineNumberTable

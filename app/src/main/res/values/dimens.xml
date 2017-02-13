@@ -6,4 +6,6 @@
     <dimen name="between_image">1dp</dimen>
 
     <dimen name="guideline_thickness">3px</dimen>
+
+    <dimen name="thumbnail_size">80dp</dimen>
 </resources>
