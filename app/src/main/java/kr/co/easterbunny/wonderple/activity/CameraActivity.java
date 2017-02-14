@@ -13,26 +13,23 @@ import java.util.HashSet;
 
 import kr.co.easterbunny.wonderple.R;
 import kr.co.easterbunny.wonderple.adapter.ViewPagerAdapter;
-import kr.co.easterbunny.wonderple.bus.RxBusNext;
 import kr.co.easterbunny.wonderple.databinding.ActivityCameraBinding;
 import kr.co.easterbunny.wonderple.event.ClickNextEvent;
 import kr.co.easterbunny.wonderple.fragment.CapturePhotoFragment;
 import kr.co.easterbunny.wonderple.fragment.GalleryPickerFragment;
 import kr.co.easterbunny.wonderple.library.ParentActivity;
-import kr.co.easterbunny.wonderple.library.util.JSLog;
-import kr.co.easterbunny.wonderple.modules.PermissionModule;
-import kr.co.easterbunny.wonderple.listener.CaturePhotoFragmentListener;
+import kr.co.easterbunny.wonderple.listener.CapturePhotoFragmentListener;
 import kr.co.easterbunny.wonderple.listener.GalleryPickerFragmentListener;
 import kr.co.easterbunny.wonderple.model.SourceType;
+import kr.co.easterbunny.wonderple.modules.PermissionModule;
 import kr.co.easterbunny.wonderple.view.ToolbarView;
 
 public class CameraActivity extends ParentActivity implements ToolbarView.OnClickTitleListener,
-        ToolbarView.OnClickNextListener, ToolbarView.OnClickBackListener, CaturePhotoFragmentListener, GalleryPickerFragmentListener {
+        ToolbarView.OnClickNextListener, ToolbarView.OnClickBackListener, CapturePhotoFragmentListener, GalleryPickerFragmentListener {
 
     private ActivityCameraBinding binding;
 
     private HashSet<SourceType> mSourceTypeSet = new HashSet<>();
-    private RxBusNext mRxBusNext = RxBusNext.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,13 +108,11 @@ public class CameraActivity extends ParentActivity implements ToolbarView.OnClic
     }
 
     private void openPhotoEditor() {
-        JSLog.D("TEST::::::::::::1", new Throwable());
         startActivity(new Intent(this, EditorActivity.class));
     }
 
     @Override
     public void openEditor() {
-        JSLog.D("TEST:::::::::::2", new Throwable());
         openPhotoEditor();
     }
 
@@ -128,7 +123,6 @@ public class CameraActivity extends ParentActivity implements ToolbarView.OnClic
 
     @Override
     public void onClickNext() {
-//        mRxBusNext.send(true);
         EventBus.getDefault().post(new ClickNextEvent(true));
     }
 

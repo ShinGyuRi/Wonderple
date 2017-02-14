@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.ExifInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -13,7 +16,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import java.io.File;
+import java.io.IOException;
+
 import kr.co.easterbunny.wonderple.R;
+import kr.co.easterbunny.wonderple.library.util.FileUtil;
 
 /**
  * Created by Gyul on 2016-06-16.
@@ -23,6 +30,8 @@ public abstract class ParentFragment extends Fragment {
 
     public Fragment homeFragment;
     public Fragment couponFragment;
+
+    private int IMAGE_SIZE = 800;
 
     public void onUIRefresh(){}
 
@@ -203,6 +212,31 @@ public abstract class ParentFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+    public void correctCameraOrientation(File imgFile, Context context) {
+        Bitmap bitmap = FileUtil.loadImageWithSampleSize(imgFile, IMAGE_SIZE);
+        try {
+            ExifInterface exif = new ExifInterface(imgFile.getAbsolutePath());
+            int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            int exifRotateDegree = exifOrientationToDegrees(exifOrientation);
+            bitmap = FileUtil.rotateImage(bitmap, exifRotateDegree);
+            FileUtil.saveBitmapToFile(bitmap, context);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private int exifOrientationToDegrees(int exifOrientation) {
+        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
+            return 90;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
+            return 180;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
+            return 270;
+        }
+        return 0;
     }
 
     @Override

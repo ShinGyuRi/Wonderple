@@ -3,7 +3,6 @@ package kr.co.easterbunny.wonderple.activity;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
-import com.squareup.picasso.Picasso;
 import com.zomato.photofilters.SampleFilters;
 import com.zomato.photofilters.imageprocessors.Filter;
 import com.zomato.photofilters.imageprocessors.subfilters.ColorOverlaySubfilter;
@@ -24,6 +22,7 @@ import kr.co.easterbunny.wonderple.R;
 import kr.co.easterbunny.wonderple.adapter.EffectAdapter;
 import kr.co.easterbunny.wonderple.databinding.ActivityEditorBinding;
 import kr.co.easterbunny.wonderple.library.ParentActivity;
+import kr.co.easterbunny.wonderple.library.util.FileUtil;
 import kr.co.easterbunny.wonderple.library.util.JSLog;
 import kr.co.easterbunny.wonderple.listener.EffectAdapterListener;
 import kr.co.easterbunny.wonderple.manager.ThumbnailManager;
@@ -80,7 +79,7 @@ public class EditorActivity extends ParentActivity implements ToolbarView.OnClic
         binding.mEffectChooserRecyclerView.setAdapter(effectAdapter);
 
         Glide.with(this)
-                .load(Uri.fromFile(mSession.getFileToUpload()))
+                .load(mSession.getFileToUpload())
                 .into(binding.mEffectPreview);
 
         binding.mEffectPreview.setOnTouchListener(setOnTouchListener());
@@ -92,7 +91,6 @@ public class EditorActivity extends ParentActivity implements ToolbarView.OnClic
 
     private List<Thumbnail> getFilters() {
         Bitmap bitmap = getBitmapFromFile();
-        JSLog.D("bitmap::::::::::::"+bitmap.toString(), new Throwable());
 
         Thumbnail t1 = new Thumbnail();
         Thumbnail t2 = new Thumbnail();
@@ -171,8 +169,7 @@ public class EditorActivity extends ParentActivity implements ToolbarView.OnClic
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         options.inMutable = true;
-        JSLog.D("mSession.getFileToUpload()"+mSession.getFileToUpload().toString(), new Throwable());
-        return BitmapFactory.decodeFile(mSession.getFileToUpload().getAbsolutePath(), options);
+        return BitmapFactory.decodeFile(FileUtil.getTempImageFile(this).getAbsolutePath(), options);
     }
 
     @Override

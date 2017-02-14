@@ -25,7 +25,6 @@ public class CropImageView extends TouchImageView {
     public Bitmap getCroppedImage() {
 
         final Drawable drawable = getDrawable();
-        JSLog.D("getDrawable:::::::"+drawable.toString(), new Throwable());
         if (drawable == null || !(drawable instanceof Drawable)) {
             JSLog.D("return null", new Throwable());
             return null;
@@ -44,7 +43,6 @@ public class CropImageView extends TouchImageView {
 
         final Bitmap originalBitmap = ((GlideBitmapDrawable) drawable.getCurrent()).getBitmap();
 
-        JSLog.D("originalBitmap::::::"+originalBitmap.toString(), new Throwable());
 
         final float cropX = (bitmapLeft + getLeft()) / scaleX;
         final float cropY = (bitmapTop + getTop()) / scaleY;
@@ -52,11 +50,6 @@ public class CropImageView extends TouchImageView {
         final float cropWidth = Math.min(getWidth() / scaleX, originalBitmap.getWidth() - cropX);
         final float cropHeight = Math.min(getHeight() / scaleY, originalBitmap.getHeight() - cropY);
 
-        JSLog.D("Bitmap::::::"+Bitmap.createBitmap(originalBitmap,
-                (int) cropX,
-                (int) cropY,
-                (int) cropWidth,
-                (int) cropHeight).toString(), new Throwable());
 
         return Bitmap.createBitmap(originalBitmap,
                 (int) cropX,

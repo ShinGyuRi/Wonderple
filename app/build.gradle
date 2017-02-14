@@ -10,7 +10,6 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
-        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -36,9 +35,6 @@ android {
         }
     }
 
-    dexOptions {
-        javaMaxHeapSize "4g"
-    }
 
     dataBinding {
         enabled = true
