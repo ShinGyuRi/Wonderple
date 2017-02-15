@@ -146,6 +146,8 @@ public class GalleryPickerFragment extends ParentFragment implements GridAdapter
 
     @Subscribe
     public void eventBus(ClickNextEvent event) {
+        correctCameraOrientation(saveBitmap(binding.mPreview.getCroppedImage(),
+                FileUtil.getNewFilePath()), getContext());
         mSession.setFileToUpload(saveBitmap(binding.mPreview.getCroppedImage(),
                 FileUtil.getNewFilePath()));
         listener.openEditor();
