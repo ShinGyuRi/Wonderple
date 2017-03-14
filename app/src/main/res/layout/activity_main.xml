@@ -54,7 +54,7 @@
 
 
             <FrameLayout
-                android:id="@+id/btn_curation"
+                android:id="@+id/btn_search"
                 android:onClick="@{switchContent.bottomBtnClick}"
                 style="@style/MainButton"></FrameLayout>
 

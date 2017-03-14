@@ -7,36 +7,17 @@ import com.google.gson.annotations.SerializedName;
  */
 public class User {
 
-
-
-    @SerializedName("dob")
-    public String dob;
-
-
     @SerializedName("email")
     public String email;
+
+    @SerializedName("password")
+    public String password;
 
     @SerializedName("username")
     public String username;
 
-    @SerializedName("firstname")
-    public String firstname;
-
-    @SerializedName("gender")
-    public String gender;
-
     @SerializedName("image")
     public String image;
-
-
-    @SerializedName("lastname")
-    public String lastname;
-
-    @SerializedName("latitude")
-    public String latitude;
-
-    @SerializedName("longitude")
-    public String longitude;
 
     @SerializedName("snsid")
     public String snsid;
@@ -48,5 +29,59 @@ public class User {
     public String udid;
 
 
+    public String getPassword() {
+        return password;
+    }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getSnsid() {
+        return snsid;
+    }
+
+    public void setSnsid(String snsid) {
+        this.snsid = snsid;
+    }
+
+    public String getSnstype() {
+        return snstype;
+    }
+
+    public void setSnstype(String snstype) {
+        this.snstype = snstype;
+    }
+
+    public String getUdid() {
+        return udid;
+    }
+
+    public void setUdid(String udid) {
+        this.udid = udid;
+    }
 }

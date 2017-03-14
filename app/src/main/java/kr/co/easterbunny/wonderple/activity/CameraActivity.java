@@ -21,7 +21,6 @@ import kr.co.easterbunny.wonderple.library.ParentActivity;
 import kr.co.easterbunny.wonderple.listener.CapturePhotoFragmentListener;
 import kr.co.easterbunny.wonderple.listener.GalleryPickerFragmentListener;
 import kr.co.easterbunny.wonderple.model.SourceType;
-import kr.co.easterbunny.wonderple.modules.PermissionModule;
 import kr.co.easterbunny.wonderple.view.ToolbarView;
 
 public class CameraActivity extends ParentActivity implements ToolbarView.OnClickTitleListener,
@@ -43,8 +42,6 @@ public class CameraActivity extends ParentActivity implements ToolbarView.OnClic
     }
 
     private void initViews()    {
-        PermissionModule permissionModule = new PermissionModule(this);
-        permissionModule.checkPermissions();
 
         binding.mMainToolbar.setOnClickBackMenuListener(this)
                 .setOnClickTitleListener(this)

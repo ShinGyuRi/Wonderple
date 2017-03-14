@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#FFFFFF</color>
-    <color name="colorPrimaryDark">#444344</color>
+    <color name="colorPrimaryDark">#D2D2D2</color>
     <color name="colorAccent">#FF4081</color>
 
 
@@ -9,6 +9,7 @@
     <color name="dark_chocolate">#2E2B25</color>
     <color name="white">#FFFFFF</color>
     <color name="white_60">#99FFFFFF</color>
+    <color name="black">#000000</color>
 
 
     <color name="guideline">#4DFFFFFF</color>
@@ -18,4 +19,10 @@
 
     <color name="red_error">#C86A6A</color>
     <color name="egg_shell">#EFEEED</color>
+
+    <color name="text_hint">#696969</color>
+    <color name="text_policy_event">#1E419B</color>
+    <color name="selected_text">#6b6b6b</color>
+    <color name="disable_text">#dbdbdb</color>
+    <color name="warning">#FF2302</color>
 </resources>

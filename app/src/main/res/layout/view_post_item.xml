@@ -18,10 +18,11 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageView
+            <com.etsy.android.grid.util.DynamicHeightImageView
                 android:id="@+id/img_post"
-                android:layout_width="200dp"
-                android:layout_height="200dp" />
+                android:layout_width="@dimen/home_post_image_width"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/home_post_image_margin_bottom"/>
         </LinearLayout>
 
         <TextView

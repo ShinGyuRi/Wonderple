@@ -22,8 +22,13 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+
+import com.google.gson.JsonObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,11 +37,24 @@ import java.util.List;
 import java.util.Locale;
 
 import kr.co.easterbunny.wonderple.R;
+import kr.co.easterbunny.wonderple.activity.LoginActivity;
+import kr.co.easterbunny.wonderple.activity.MainActivity;
 import kr.co.easterbunny.wonderple.activity.SplashActivity;
 import kr.co.easterbunny.wonderple.library.dialog.CommonLoadingDialog;
 import kr.co.easterbunny.wonderple.library.listener.TakePictureListener;
+import kr.co.easterbunny.wonderple.library.util.Definitions;
 import kr.co.easterbunny.wonderple.library.util.Definitions.ACTIVITY_REQUEST_CODE;
 import kr.co.easterbunny.wonderple.library.util.FileUtil;
+import kr.co.easterbunny.wonderple.library.util.JSLog;
+import kr.co.easterbunny.wonderple.library.util.NetworkUtil;
+import kr.co.easterbunny.wonderple.library.util.PrefUtil;
+import kr.co.easterbunny.wonderple.library.util.TextUtil;
+import kr.co.easterbunny.wonderple.model.SignInResult;
+import kr.co.easterbunny.wonderple.model.User;
+import kr.co.easterbunny.wonderple.view.CustomTextView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 /**
@@ -139,8 +157,8 @@ public class ParentActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 //		for(String permission: permissions)
 //			JYLog.D(requestCode +" permission: "+ permission, new Throwable());
-//		for(int result : grantResults)
-//			JYLog.D(requestCode +" result: "+ result, new Throwable());
+//		for(int loginResult : grantResults)
+//			JYLog.D(requestCode +" loginResult: "+ loginResult, new Throwable());
         switch (requestCode) {
             case ACTIVITY_REQUEST_CODE.PERMISSION_ABOUT_CAMERA:
                 for (int result : grantResults) {
@@ -367,34 +385,159 @@ public class ParentActivity extends AppCompatActivity {
         }
     }
 
-//    public boolean checkPasswordValidation(String inputPW) {
-//        if (TextUtils.isEmpty(inputPW)) {
-//            Toast.makeText(this, R.string.str_warning_pw_min_8, Toast.LENGTH_SHORT).show();
-//            return false;
-//        }
-//        if (inputPW.length() < 8) {    //|| inputPW.length()>16{
-//            Toast.makeText(this, R.string.str_warning_pw_min_8, Toast.LENGTH_SHORT).show();
-//            return false;
-//        }
-//        if (inputPW.contains(" ")) {
-//            Toast.makeText(this, R.string.str_warning_pw_rule_01, Toast.LENGTH_SHORT).show();
-//            return false;
-//        }
-//        if (TextUtil.isPassworkdCheck(inputPW) == false) {
-//            Toast.makeText(this, R.string.str_warning_pw_rule_02, Toast.LENGTH_SHORT).show();
-//            return false;
-//        }
-//        return true;
-//    }
 
-//    public boolean checkValidation() {
-//        inputEmail = editEmail.getText().toString();
-//        inputPW = editPW.getText().toString();
-//        if (!TextUtil.isNull(inputEmail) && !TextUtil.isNull(inputPW) && inputPW.length() > 3) {
-//            return true;
-//        }
-//        return false;
-//    }
+    public void snsLoginCheck(Activity activity, String name, String type, String idnum, String picture) {
+
+
+        Call<JsonObject> jsonObjectCall = NetworkUtil.getInstace().loginCheck(name, type, idnum);
+        jsonObjectCall.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                JsonObject jsonObject = response.body();
+                String message = jsonObject.get("message").toString().replace("\"", "");
+
+                if ("account does not exist".equals(message)) {
+                    JSLog.D("message: "+message, new Throwable());
+
+                    if (getString(R.string.activity_splash).equals(activity.getClass().getSimpleName()))
+                        moveLoginActivity(activity);
+                    else if (getString(R.string.activity_login).equals(activity.getClass().getSimpleName()))
+                        requestSNSLogin(activity, name, type, picture, idnum);
+
+                } else if ("login successfully checked".equals(message)) {
+                    JSLog.D("message: "+message, new Throwable());
+                    moveMainActivity(activity);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+            }
+        });
+    }
+
+    public void emailLoginCheck(Activity activity, String email, String type, String password) {
+
+        Call<JsonObject> jsonObjectCall = NetworkUtil.getInstace().loginCheckEmail(email, type, password);
+        jsonObjectCall.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                JsonObject jsonObject = response.body();
+                String message = jsonObject.get("message").toString().replace("\"", "");
+
+                if ("login successfully checked".equals(message)) {
+                    JSLog.D("message: " + message, new Throwable());
+                    moveMainActivity(activity);
+                } else {
+                    JSLog.D("message: "+ message, new Throwable());
+                    moveLoginActivity(activity);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+            }
+        });
+    }
+
+
+    public void requestSNSLogin(Activity activity, String name, String type, String picture, String referenceId) {
+
+        SignInResult signInResult = new SignInResult();
+        User user = new User();
+
+        Call<JsonObject> jsonObjectCall = NetworkUtil.getInstace().signUp(name, type, picture, referenceId);
+        jsonObjectCall.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                JsonObject jsonObject = response.body();
+                String result = jsonObject.get("result").toString().replace("\"", "");
+                String message = jsonObject.get("message").toString().replace("\"", "");
+
+                signInResult.setResult(result);
+                signInResult.setMessage(message);
+
+                if ("successfully added sns account".equals(message)) {
+
+                    String uid = jsonObject.get("uid").toString().replace("\"", "");
+
+                    user.setEmail(null);
+                    user.setImage(picture);
+                    user.setSnsid(referenceId);
+                    user.setSnstype(type);
+                    user.setUdid(uid);
+                    user.setUsername(name);
+                    user.setPassword(null);
+                    signInResult.setUser(user);
+
+                    WonderpleLib.getInstance().func01_saveUserDataToFile(activity, signInResult);
+
+                    moveMainActivity(activity);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+
+            }
+        });
+    }
+
+
+
+    public void moveLoginActivity(Activity activity) {
+
+        Intent intent = new Intent(activity, LoginActivity.class);
+        startActivity(intent);
+        activity.finish();
+
+    }
+
+
+
+    public void moveMainActivity(Activity activity) {
+
+        Intent intent = new Intent(activity, MainActivity.class);
+        startActivity(intent);
+        activity.finish();
+
+    }
+
+    public boolean checkValidation(EditText etEmail, EditText etPassword) {
+        String inputEmail = etEmail.getText().toString();
+        String inputPW = etPassword.getText().toString();
+        if (!TextUtil.isNull(inputEmail) && !TextUtil.isNull(inputPW)) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean checkPasswordValidation(String inputPW, CustomTextView tvWarning) {
+        if (TextUtils.isEmpty(inputPW)) {
+            tvWarning.setVisibility(View.VISIBLE);
+            tvWarning.setText(R.string.str_warning_pw_min_8);
+            return false;
+        }
+        if (inputPW.length() < 8 || inputPW.length() > 15) {    //|| inputPW.length()>16{
+            tvWarning.setVisibility(View.VISIBLE);
+            tvWarning.setText(R.string.str_warning_pw_min_8);
+            return false;
+        }
+        if (inputPW.contains(" ")) {
+            tvWarning.setVisibility(View.VISIBLE);
+            tvWarning.setText(R.string.str_warning_pw_rule_01);
+            return false;
+        }
+        if (TextUtil.isPassworkdCheck(inputPW) == false) {
+            tvWarning.setVisibility(View.VISIBLE);
+            tvWarning.setText(R.string.str_warning_pw_rule_02);
+            return false;
+        }
+        return true;
+    }
+
+
+
 
 //    public void showImageAlert() {
 //        String[] imageChoice = new String[2];

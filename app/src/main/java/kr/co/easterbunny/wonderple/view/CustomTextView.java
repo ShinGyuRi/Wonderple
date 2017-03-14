@@ -3,13 +3,14 @@ package kr.co.easterbunny.wonderple.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
 import kr.co.easterbunny.wonderple.R;
 
 
-public class CustomTextView extends TextView {
+public class CustomTextView extends AppCompatTextView {
 
     public CustomTextView(Context context) {
         super(context);

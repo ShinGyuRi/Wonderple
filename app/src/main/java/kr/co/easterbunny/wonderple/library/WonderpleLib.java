@@ -49,7 +49,6 @@ public class WonderpleLib
     {
         Handler mHandler = new Handler();
         mHandler.postDelayed(runnable,delayTime);
-
     }
 
 
@@ -62,15 +61,6 @@ public class WonderpleLib
         if(signInResult != null)
         {
 
-            if(signInResult.sessionToken != null)
-            {
-                editor.putString("sessionToken",signInResult.sessionToken);
-            }
-
-            if(signInResult.user.dob != null)
-            {
-                editor.putString("dob",signInResult.user.dob);
-            }
 
             if(signInResult.user.email != null)
             {
@@ -82,35 +72,10 @@ public class WonderpleLib
                 editor.putString("username",signInResult.user.username);
             }
 
-            if(signInResult.user.firstname != null)
-            {
-                editor.putString("firstname",signInResult.user.firstname);
-            }
-
-            if(signInResult.user.gender != null)
-            {
-                editor.putString("gender",signInResult.user.gender);
-            }
-
-
-            if(signInResult.user.lastname != null)
-            {
-                editor.putString("lastname",signInResult.user.lastname);
-            }
 
             if(signInResult.user.image != null)
             {
                 editor.putString("image",signInResult.user.image);
-            }
-
-            if(signInResult.user.latitude != null)
-            {
-                editor.putString("latitude",signInResult.user.latitude);
-            }
-
-            if(signInResult.user.longitude != null)
-            {
-                editor.putString("longitude",signInResult.user.longitude);
             }
 
             if(signInResult.user.snsid != null)
@@ -126,6 +91,11 @@ public class WonderpleLib
             if(signInResult.user.udid != null)
             {
                 editor.putString("udid",signInResult.user.udid);
+            }
+
+            if(signInResult.user.password != null)
+            {
+                editor.putString("password",signInResult.user.password);
             }
 
 
@@ -149,51 +119,31 @@ public class WonderpleLib
 
         SharedPreferences pref = getSharedPref(context);
 
-        String sessionToken = pref.getString("sessionToken","");
-        String dob = pref.getString("dob","");
         String email = pref.getString("email","");
         String username = pref.getString("username","");
-        String firstname = pref.getString("firstname","");
-        String gender = pref.getString("gender","");
-        String lastname = pref.getString("lastname","");
         String image = pref.getString("image","");
-        String latitude = pref.getString("latitude","");
-        String longitude = pref.getString("longitude","");
         String snsid = pref.getString("snsid","");
         String snstype = pref.getString("snstype","");
         String udid = pref.getString("udid","");
+        String password = pref.getString("password","");
 
 
-
-
-        makedSignInResult.sessionToken = sessionToken;
 
         makedSignInResult.user = new User();
-        makedSignInResult.user.dob = dob;
         makedSignInResult.user.email = email;
         makedSignInResult.user.username = username;
-        makedSignInResult.user.firstname = firstname;
-        makedSignInResult.user.gender = gender;
-        makedSignInResult.user.lastname = lastname;
         makedSignInResult.user.image = image;
-        makedSignInResult.user.latitude = latitude;
-        makedSignInResult.user.longitude = longitude;
         makedSignInResult.user.snsid = snsid;
         makedSignInResult.user.snstype = snstype;
         makedSignInResult.user.udid = udid;
+        makedSignInResult.user.password = password;
 
-        Log.d("JIN","func01_loadUserDataToFile 확인 0001 : latitude --> "+latitude);
 
         Log.d("JIN","func01_loadUserDataToFile 확인 0002 : udid --> "+udid);
-        Log.d("JIN","func01_loadUserDataToFile 확인 0003 : makedSignInResult.sessionToken --> "+makedSignInResult.sessionToken);
 
-        if(!makedSignInResult.sessionToken.equals(""))
-        {
-            currentUser = makedSignInResult;
-            return currentUser;
-        }
+        currentUser = makedSignInResult;
+        return currentUser;
 
-        return null;
 
     }
 
@@ -223,23 +173,6 @@ public class WonderpleLib
         }
 
         return "";
-    }
-
-
-    public String func01_getUserRealNameConcatenateLastNameAndFirstName(Context context)
-    {
-        String lastName = currentUser.user.lastname;
-        String firstName = currentUser.user.firstname;
-        String makedName;
-        if(lastName != null && firstName != null)
-        {
-            makedName = firstName+" "+lastName;
-        }
-        else
-        {
-            makedName = func01_loadUsernameCheckSNSAndUDID(context);
-        }
-        return makedName;
     }
 
 
@@ -274,13 +207,13 @@ public class WonderpleLib
 
     public boolean func02_isUserKeppSignInMode(Context context)
     {
-        return getSharedPref(context).getBoolean("isUserKeppSignInMode",false);
+        return getSharedPref(context).getBoolean("isUserKeepSignInMode",false);
 
     }
 
     public void func02_saveIsUserKeepSignInMode(Context context, boolean isKeep)
     {
-        getSharedPrefEdit(context).putBoolean("isUserKeppSignInMode",isKeep);
+        getSharedPrefEdit(context).putBoolean("isUserKeepSignInMode",isKeep);
         getSharedPrefEdit(context).commit();
 
     }
@@ -338,79 +271,6 @@ public class WonderpleLib
 
 
 
-
-
-
-    public int func06_getTiltValueFromAngle(float degreeValue)
-    {
-
-        int returnValue = 0;
-
-        if(
-                ( 22.5 <= degreeValue  && degreeValue <= 67.5)
-                        || ( -337.5 <= degreeValue  && degreeValue <= -292.5)
-                )
-        {
-            returnValue = 2;
-        }
-        else if(
-                ( 67.5 <= degreeValue  && degreeValue <= 112.5)
-                        || ( -292.5 <= degreeValue  && degreeValue <= -247.5)
-                )
-        {
-            returnValue = 3;
-        }
-        else if(
-                ( 112.5 <= degreeValue  && degreeValue <= 157.5)
-                        || ( -247.5 <= degreeValue  && degreeValue <= -202.5)
-                )
-        {
-            returnValue = 4;
-        }
-        else if(
-                ( 157.5 <= degreeValue  && degreeValue <= 202.5)
-                        || ( -202.5 <= degreeValue  && degreeValue <= -157.5)
-                )
-        {
-            returnValue = 5;
-        }
-        else if(
-                (202.5 <= degreeValue && degreeValue <= 247.5)
-                        || (-157.5 <= degreeValue && degreeValue <= -112.5)
-                )
-        {
-            returnValue = 6;
-        }
-        else if(
-                (247.5 <= degreeValue && degreeValue <= 292.5)
-                        || (-112.5 <= degreeValue && degreeValue <= -67.5)
-                )
-        {
-            returnValue = 7;
-        }
-        else if((292.5 <= degreeValue && degreeValue <= 337.5)
-                || (  -67.5 <= degreeValue && degreeValue <= -22.5 )
-                )
-        {
-            returnValue = 8;
-        }
-        else if(
-                (337.5 <= degreeValue && degreeValue <= 360)
-                        || (0 <= degreeValue && degreeValue <= 22.5)
-
-                        || (  -22.5 <= degreeValue && degreeValue <= 0 )
-                        || (  -360 <= degreeValue && degreeValue <= -337.5 )
-                )
-        {
-            returnValue = 1;
-        }
-        else
-        {
-            Log.d("JIN","피해가는 값 확인 : "+degreeValue);
-        }
-
-        return returnValue;
-    }
 
 
 

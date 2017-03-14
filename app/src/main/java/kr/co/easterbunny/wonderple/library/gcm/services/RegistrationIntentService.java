@@ -6,11 +6,18 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.gson.JsonObject;
 
 import java.io.IOException;
 
+import kr.co.easterbunny.wonderple.library.WonderpleLib;
 import kr.co.easterbunny.wonderple.library.gcm.GcmUtil;
 import kr.co.easterbunny.wonderple.library.util.JSLog;
+import kr.co.easterbunny.wonderple.library.util.NetworkUtil;
+import kr.co.easterbunny.wonderple.model.SignInResult;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 /**
@@ -50,8 +57,28 @@ public class RegistrationIntentService extends IntentService {
      *
      * @param token The new token.
      */
-    private void sendRegistrationToServer(String token) {
+    public void sendRegistrationToServer(String token) {
+        WonderpleLib.getInstance().func01_loadUserDataToFile(RegistrationIntentService.this);
+        SignInResult userData = WonderpleLib.getInstance().func01_loadUserDataFromMemory();
 
+        String uid = userData.getUser().getUdid();
+        String picture = userData.getUser().getImage();
+
+        Call<JsonObject> jsonObjectCall = NetworkUtil.getInstace().pushRegister(uid, token, picture);
+        jsonObjectCall.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                JsonObject jsonObject = response.body();
+
+                String message = jsonObject.get("message").toString().replace("\"", "");
+                JSLog.E("Push token result : "+message, new Throwable());
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+
+            }
+        });
     }
 
     /**

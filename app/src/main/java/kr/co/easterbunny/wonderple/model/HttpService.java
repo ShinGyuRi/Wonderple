@@ -1,5 +1,7 @@
 package kr.co.easterbunny.wonderple.model;
 
+import com.google.gson.JsonObject;
+
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -13,34 +15,42 @@ public interface HttpService {
 
 
     @FormUrlEncoded
-    @POST("logincheck.php")
-    Call<String> loginCheck(@Field("name") String name,
+    @POST("logincheck_android.php")
+    Call<JsonObject> loginCheck(@Field("name") String name,
                             @Field("type") String type,
                             @Field("idnum") String idNum);
 
     @FormUrlEncoded
-    @POST("logincheck_email.php")
-    Call<String>  loginCheckEmail(@Field("email") String email,
+    @POST("logincheck_email_android.php")
+    Call<JsonObject>  loginCheckEmail(@Field("email") String email,
                                    @Field("type") String type,
                                    @Field("password") String password);
 
     @FormUrlEncoded
-    @POST("pushregister.php")
-    Call<String> pushRegister(@Field("uid") String uid,
+    @POST("pushregister_android.php")
+    Call<JsonObject> pushRegister(@Field("uid") String uid,
                               @Field("pushid") String pushId,
                               @Field("picture") String picture);
 
     @FormUrlEncoded
-    @POST("sighup.php")
-    Call<String> signUp(@Field("name") String name,
-                        @Field("type") String type,
-                        @Field("picture") String picture,
-                        @Field("idnum") String idNum);
+    @POST("signup_android.php")
+    Call<JsonObject> signUp(@Field("name") String name,
+                            @Field("type") String type,
+                            @Field("picture") String picture,
+                            @Field("idnum") String idNum);
 
     @FormUrlEncoded
-    @POST("signUp_email.php")
-    Call<String> signUpEmail(@Field("email") String email,
+    @POST("signup_email_android.php")
+    Call<JsonObject> signUpEmail(@Field("email") String email,
                              @Field("name") String name,
                              @Field("password") String password,
                              @Field("type") String type);
+
+    @FormUrlEncoded
+    @POST("pwrequest_android.php")
+    Call<JsonObject> pwRequest(@Field("email") String email);
+
+    @FormUrlEncoded
+    @POST("loadmain_android.php")
+    Call<LoadMainResult> loadMain(@Field("uid") String uid);
 }

@@ -14,6 +14,7 @@ import java.util.List;
 
 import kr.co.easterbunny.wonderple.R;
 import kr.co.easterbunny.wonderple.databinding.ViewPostItemBinding;
+import kr.co.easterbunny.wonderple.library.util.JSLog;
 
 /**
  * Created by scona on 2017-01-19.
@@ -22,8 +23,8 @@ import kr.co.easterbunny.wonderple.databinding.ViewPostItemBinding;
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.BindingHolder> {
 
 
-    private List<Integer> posts;
-    private List<String> items;
+    private List<String> posts;
+    private List<String> usernames;
 
     private Context context;
 
@@ -46,10 +47,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.BindingHolder>
     }
 
 
-    public PostAdapter(Context context, List<Integer> posts, List<String> items) {
+    public PostAdapter(Context context, List<String> posts, List<String> usernames) {
         this.context = context;
         this.posts = posts;
-        this.items = items;
+        this.usernames = usernames;
     }
 
     @Override
@@ -61,18 +62,25 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.BindingHolder>
 
     @Override
     public void onBindViewHolder(PostAdapter.BindingHolder holder, int position) {
-        holder.mBoundString = items.get(position);
+
+        JSLog.D("posts ::::: "+posts.get(position), new Throwable());
+        JSLog.D("usernames :::::"+usernames.get(position), new Throwable());
+
+        holder.mBoundString = usernames.get(position);
         Glide.with(context)
                 .load(posts.get(position))
                 .thumbnail(0.1f)
                 .into(holder.binding.imgPost);
-        holder.binding.txtUsername.setText(items.get(position));
+        holder.binding.txtUsername.setText(usernames.get(position));
     }
 
 
     @Override
     public int getItemCount() {
-        return items.size();
+        if (usernames == null) {
+            return 0;
+        }
+        return usernames.size();
     }
 
 

@@ -54,8 +54,9 @@ public class Definitions {
     }
 
     public interface SNSTYPE_CODE    {
-        String FACEBOOK = "Facebook";
-        String TILTCODE = "Tiltcode";
+        String FACEBOOK = "facebook";
+        String KAKAOTALK = "kakao";
+        String EMAIL = "email";
     }
 
     public interface OS {

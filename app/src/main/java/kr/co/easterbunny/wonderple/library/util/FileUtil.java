@@ -137,7 +137,7 @@ public class FileUtil {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
             out.close();
 
-//            MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, file_path.getName(), file_path.getName());
+//            MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, file_path.getImageUrl(), file_path.getImageUrl());
 //            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED), String.valueOf(Uri.parse("file://" + Environment.getExternalStorageDirectory())));
 //            context.sendBroadcast(new Intent( Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file_path)) );
             addImageToGallery(string_path+file_name, context);

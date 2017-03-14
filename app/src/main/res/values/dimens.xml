@@ -8,4 +8,60 @@
     <dimen name="guideline_thickness">3px</dimen>
 
     <dimen name="thumbnail_size">80dp</dimen>
+
+
+    <dimen name="validation_img_size">9.3dp</dimen>
+
+    <dimen name="login_logo_margin_top">111dp</dimen>
+    <dimen name="login_logo_margin_bottom">138dp</dimen>
+    <dimen name="login_logo_width">248dp</dimen>
+    <dimen name="login_logo_height">60dp</dimen>
+
+    <dimen name="login_btn_width">200dp</dimen>
+    <dimen name="login_btn_height">48dp</dimen>
+    <dimen name="login_btn_margin">16dp</dimen>
+    <dimen name="login_btn_text_margin_left">66dp</dimen>
+
+    <dimen name="login_view_width">35.3dp</dimen>
+    <dimen name="login_view_height">1dp</dimen>
+    <dimen name="login_view_margin">21dp</dimen>
+
+    <dimen name="login_str_or_margin">13dp</dimen>
+
+    <dimen name="login_email_btn_back_margin_top">12dp</dimen>
+    <dimen name="login_email_logo_margin_top">68dp</dimen>
+
+    <dimen name="login_email_layout_width">280dp</dimen>
+    <dimen name="login_email_layout_height">52dp</dimen>
+    <dimen name="login_email_edittext_width">206dp</dimen>
+    <dimen name="login_email_edittext_height">18dp</dimen>
+
+    <dimen name="toolbar_height">44dp</dimen>
+
+    <dimen name="navigation_icon_width">9.3dp</dimen>
+    <dimen name="navigation_icon_height">17.3dp</dimen>
+
+    <dimen name="signup_layout_width">300dp</dimen>
+    <dimen name="signup_layout_height">52dp</dimen>
+    <dimen name="signup_edittext_width">224dp</dimen>
+    <dimen name="signup_edittext_height">18dp</dimen>
+
+    <dimen name="find_password_layout_width">300dp</dimen>
+    <dimen name="find_password_layout_height">42dp</dimen>
+    <dimen name="find_password_edittext_width">229dp</dimen>
+    <dimen name="find_password_edittext_height">18dp</dimen>
+
+    <dimen name="fragment_policy_padding_top">23dp</dimen>
+    <dimen name="fragment_policy_padding_side">16dp</dimen>
+    
+    <dimen name="home_post_image_width">222dp</dimen>
+    <dimen name="home_post_image_margin_bottom">6dp</dimen>
+    
+    <dimen name="title_bar_height">48dp</dimen>
+    <dimen name="title_bar_back_height">44dp</dimen>
+
+    <dimen name="home_center_logo_width">131dp</dimen>
+    <dimen name="home_center_logo_height">138dp</dimen>
+
+
 </resources>

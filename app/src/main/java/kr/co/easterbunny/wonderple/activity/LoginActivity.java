@@ -13,6 +13,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.google.gson.JsonObject;
 import com.kakao.auth.AuthType;
 import com.kakao.auth.Session;
 import com.kakao.network.ErrorResult;
@@ -31,14 +32,23 @@ import java.util.List;
 import kr.co.easterbunny.wonderple.R;
 import kr.co.easterbunny.wonderple.databinding.ActivityLoginBinding;
 import kr.co.easterbunny.wonderple.library.ParentActivity;
+import kr.co.easterbunny.wonderple.library.WonderpleLib;
+import kr.co.easterbunny.wonderple.library.util.Definitions;
 import kr.co.easterbunny.wonderple.library.util.Definitions.ACTIVITY_REQUEST_CODE;
 import kr.co.easterbunny.wonderple.library.util.JSLog;
 import kr.co.easterbunny.wonderple.library.util.NetworkUtil;
+import kr.co.easterbunny.wonderple.library.util.PrefUtil;
+import kr.co.easterbunny.wonderple.model.SignInResult;
+import kr.co.easterbunny.wonderple.model.User;
+import kr.co.easterbunny.wonderple.modules.PermissionModule;
 import kr.co.easterbunny.wonderple.sdk.KakaoSessionCallbackListener;
 import kr.co.easterbunny.wonderple.sdk.SessionCallback;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static kr.co.easterbunny.wonderple.library.util.Definitions.SNSTYPE_CODE.FACEBOOK;
+import static kr.co.easterbunny.wonderple.library.util.Definitions.SNSTYPE_CODE.KAKAOTALK;
 
 public class LoginActivity extends ParentActivity implements KakaoSessionCallbackListener {
 
@@ -54,6 +64,9 @@ public class LoginActivity extends ParentActivity implements KakaoSessionCallbac
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         binding.setLogin(this);
+
+        PermissionModule permissionModule = new PermissionModule(this);
+        permissionModule.checkPermissions();
     }
 
 
@@ -66,10 +79,13 @@ public class LoginActivity extends ParentActivity implements KakaoSessionCallbac
                 kakaoLogin();
                 break;
             case R.id.btn_emailLogin:
-                emailLogin();
+                startActivity(new Intent(LoginActivity.this, LoginEmailActivity.class));
                 break;
         }
     }
+
+
+
 
 
     /***************************************
@@ -164,7 +180,7 @@ public class LoginActivity extends ParentActivity implements KakaoSessionCallbac
 
     public void facebookLoginCheck() {
         JSLog.D(facebookEmail + facebookReferenceId + facebookName + facebookImagePath, new Throwable());
-//        requestSNSLogin(facebookReferenceId, facebookName, facebookImagePath, facebookEmail, AUTH_CHANNEL.FACEBOOK);
+        snsLoginCheck(this, facebookName, FACEBOOK, facebookReferenceId, facebookImagePath);
     }
 
 
@@ -212,7 +228,7 @@ public class LoginActivity extends ParentActivity implements KakaoSessionCallbac
         if (userProfile == null) {
             return;
         }
-//        requestSNSLogin(userProfile.getId() + "", userProfile.getNickname(), userProfile.getProfileImagePath(), null, AUTH_CHANNEL.KAKAOTALK);
+        snsLoginCheck(this, userProfile.getNickname(), KAKAOTALK, userProfile.getId()+"", userProfile.getProfileImagePath());
     }
 
 
@@ -246,33 +262,6 @@ public class LoginActivity extends ParentActivity implements KakaoSessionCallbac
 
             @Override
             public void onNotSignedUp() {
-            }
-        });
-    }
-
-
-    /**********************************************
-     * 이메일 로그인
-     **********************************************/
-    private String email;
-    private String type;
-    private String password;
-
-
-    //테스트중
-    public void emailLogin() {
-        Call<String> stringCall = NetworkUtil.getInstace().loginCheckEmail("jin@easterbunny.co.kr", "email", "EF797C8118F02DFB649607DD5D3F8C7623048C9C063D532CC95C5ED7A898A64F");
-        stringCall.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                JSLog.D(new Throwable());
-                String callback = response.body();
-                JSLog.E(callback, null);
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                JSLog.D(new Throwable());
             }
         });
     }

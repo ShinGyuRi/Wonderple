@@ -7,7 +7,7 @@ package kr.co.easterbunny.wonderple.model;
 public enum SourceType {
 
     Gallery(),
-    Photo;
+    Photo();
 
     SourceType()    {}
 }

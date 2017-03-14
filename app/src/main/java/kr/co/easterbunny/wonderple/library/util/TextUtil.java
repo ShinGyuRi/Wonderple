@@ -143,14 +143,14 @@ public class TextUtil {
         String pattern02 = "(?=.[A-Za-z!\"#$%&\\'\\(\\)*+,-.\\/:;<=>?@\\[\\\\\\]^_`\\{|\\}~\\]])(?=.*[0-9])";
         String pattern03 = "(?=.[0-9A-Z!\"#$%&\\'\\(\\)*+,-.\\/:;<=>?@\\[\\\\\\]^_`\\{|\\}~\\]])(?=.*[a-z])";
         String pattern04 = "(?=.[a-z0-9!\"#$%&\\'\\(\\)*+,-.\\/:;<=>?@\\[\\\\\\]^_`\\{|\\}~\\]])(?=.*[A-Z])";
-        String pattern = "(" + pattern01 + "|" + pattern02 + "|" + pattern03 + "|" + pattern04 + ").{6,16}";
+        String pattern = "(" + pattern01 + "|" + pattern02 + "|" + pattern03 + "|" + pattern04 + ").{8,15}";
         Pattern p = Pattern.compile(pattern);
         Matcher m = p.matcher(password);
         if (m.find()) {
-            Log.d(TAG, "성공", new Throwable());
+            JSLog.D("성공", new Throwable());
             return true;
         } else {
-            Log.d(TAG, "실패", new Throwable());
+            JSLog.D("실패", new Throwable());
             return false;
         }
     }

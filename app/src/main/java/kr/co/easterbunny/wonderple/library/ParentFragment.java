@@ -190,12 +190,12 @@ public abstract class ParentFragment extends Fragment {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 //		for(String permission: permissions)
 //			JYLog.D(requestCode +" permission: "+ permission, new Throwable());
-//		for(int result : grantResults)
-//			JYLog.D(requestCode +" result: "+ result, new Throwable());
+//		for(int loginResult : grantResults)
+//			JYLog.D(requestCode +" loginResult: "+ loginResult, new Throwable());
 //		switch (requestCode){
 //			case Definitions.ACTIVITY_REQUEST_CODE.PERMISSION_ABOUT_CAMERA:
-//				for(int result : grantResults){
-//					if(result != PackageManager.PERMISSION_GRANTED){
+//				for(int loginResult : grantResults){
+//					if(loginResult != PackageManager.PERMISSION_GRANTED){
 //						showPermissionDialog(R.string.str_permission_message_camera);
 //						return;
 //					}
