@@ -4,9 +4,11 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 
@@ -14,7 +16,9 @@ import java.util.List;
 
 import kr.co.easterbunny.wonderple.R;
 import kr.co.easterbunny.wonderple.databinding.ViewPostItemBinding;
+import kr.co.easterbunny.wonderple.library.util.ImageUtil;
 import kr.co.easterbunny.wonderple.library.util.JSLog;
+import kr.co.easterbunny.wonderple.model.LoadMainResult;
 
 /**
  * Created by scona on 2017-01-19.
@@ -23,8 +27,7 @@ import kr.co.easterbunny.wonderple.library.util.JSLog;
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.BindingHolder> {
 
 
-    private List<String> posts;
-    private List<String> usernames;
+    private List<LoadMainResult.PostImage> postImages;
 
     private Context context;
 
@@ -32,8 +35,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.BindingHolder>
 
     public class BindingHolder extends RecyclerView.ViewHolder  {
         private final ViewPostItemBinding binding;
-
-        public String mBoundString;
 
         public BindingHolder(View view) {
             super(view);
@@ -47,10 +48,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.BindingHolder>
     }
 
 
-    public PostAdapter(Context context, List<String> posts, List<String> usernames) {
+    public PostAdapter(Context context, List<LoadMainResult.PostImage> postImages) {
         this.context = context;
-        this.posts = posts;
-        this.usernames = usernames;
+        this.postImages = postImages;
     }
 
     @Override
@@ -63,24 +63,30 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.BindingHolder>
     @Override
     public void onBindViewHolder(PostAdapter.BindingHolder holder, int position) {
 
-        JSLog.D("posts ::::: "+posts.get(position), new Throwable());
-        JSLog.D("usernames :::::"+usernames.get(position), new Throwable());
+        double positionHeight = ImageUtil.getPositionRatio(position, Double.parseDouble(postImages.get(position).getRatio()));
 
-        holder.mBoundString = usernames.get(position);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        int gravity = "1".equals(postImages.get(position).getRandomNum()) ? Gravity.RIGHT : Gravity.LEFT;
+        params.gravity = gravity;
+
+        holder.binding.layoutPost.setLayoutParams(params);
+
+        holder.binding.imgPost.setHeightRatio(positionHeight);
         Glide.with(context)
-                .load(posts.get(position))
+                .load(postImages.get(position).getImageUrl())
                 .thumbnail(0.1f)
+                .centerCrop()
                 .into(holder.binding.imgPost);
-        holder.binding.txtUsername.setText(usernames.get(position));
+        holder.binding.txtUsername.setText(postImages.get(position).getUser().getName());
     }
 
 
     @Override
     public int getItemCount() {
-        if (usernames == null) {
+        if (postImages == null) {
             return 0;
         }
-        return usernames.size();
+        return postImages.size();
     }
 
 

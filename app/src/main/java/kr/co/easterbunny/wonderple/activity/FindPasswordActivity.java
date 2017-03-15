@@ -63,7 +63,7 @@ public class FindPasswordActivity extends AppCompatActivity {
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_confirm:
+            case R.id.btn_report:
                 requestPassword();
         }
     }

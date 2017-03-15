@@ -73,7 +73,8 @@
         <activity android:name=".activity.LoginEmailActivity" />
         <activity android:name=".activity.JoinActivity" />
         <activity android:name=".activity.FindPasswordActivity" />
-        <activity android:name=".activity.PolicyActivity"></activity>
+        <activity android:name=".activity.PolicyActivity" />
+        <activity android:name=".activity.PostDetailActivity"></activity>
     </application>
 
 </manifest>

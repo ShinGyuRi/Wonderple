@@ -34,8 +34,7 @@ public class HomeFragment extends ParentFragment {
 
     private String uid;
 
-    List<String> postImages = new ArrayList<>();
-    List<String> usernames = new ArrayList<>();
+    List<LoadMainResult.PostImage> postImages = new ArrayList<>();
 
 
     public HomeFragment() {
@@ -97,12 +96,9 @@ public class HomeFragment extends ParentFragment {
                 if ("the main load succeeded".equals(message)) {
                     if (loadMainResult.getPostImages() != null) {
 
-                        for (int i = 0; i < loadMainResult.getPostImages().size(); i++) {
-                            postImages.add(loadMainResult.getPostImages().get(i).getImageUrl());
-                            usernames.add(loadMainResult.getPostImages().get(i).getUser().getName());
-                        }
+                        postImages = loadMainResult.getPostImages();
 
-                        binding.recyclerviewPostImage.setAdapter(new PostAdapter(getContext(), postImages, usernames));
+                        binding.recyclerviewPostImage.setAdapter(new PostAdapter(getContext(), postImages));
                         binding.recyclerviewPostImage.setLayoutManager(new LinearLayoutManager(getActivity()));
 
                     } else {

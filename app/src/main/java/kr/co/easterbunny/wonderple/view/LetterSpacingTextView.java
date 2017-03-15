@@ -1,6 +1,7 @@
-package kr.co.easterbunny.wonderple.library.util;
+package kr.co.easterbunny.wonderple.view;
 
 import android.content.Context;
+import android.support.v7.widget.AppCompatTextView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ScaleXSpan;
@@ -10,7 +11,7 @@ import android.widget.TextView;
 /**
  * Created by Gyul on 2016-07-05.
  */
-public class LetterSpacingTextView extends TextView {
+public class LetterSpacingTextView extends AppCompatTextView {
     private float letterSpacing = LetterSpacing.BIGGEST;
     private CharSequence originalText = "";
 

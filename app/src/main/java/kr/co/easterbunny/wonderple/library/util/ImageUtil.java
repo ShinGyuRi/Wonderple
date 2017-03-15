@@ -16,12 +16,14 @@ import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
+import android.util.SparseArray;
 import android.widget.ImageView;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Random;
 
 /**
  * Created by Gyul on 2016-06-16.
@@ -232,5 +234,27 @@ public class ImageUtil {
         rs.destroy();
 
         return outBitmap;
+    }
+
+    private static final SparseArray<Double> sPositionHeightRatios = new SparseArray<Double>();
+    private static final Random mRandom = new Random();
+
+    public static double getPositionRatio(final int position, double ratio) {
+//        double ratio = sPositionHeightRatios.get(position, 0.0);
+        // if not yet done generate and stash the columns height
+        // in our real world scenario this will be determined by
+        // some match based on the known height and width of the image
+        // and maybe a helpful way to get the column height!
+        if (ratio == 0) {
+            ratio = sPositionHeightRatios.get(position, 0.0);
+        }
+//        ratio = getRandomHeightRatio();
+        sPositionHeightRatios.append(position, ratio);
+        JSLog.D("getPositionRatio:" + position + " ratio:" + ratio, new Throwable());
+        return ratio;
+    }
+
+    public static double getRandomHeightRatio() {
+        return (mRandom.nextDouble() / 2.0) + 1.0; // height will be 1.0 - 1.5 the width
     }
 }

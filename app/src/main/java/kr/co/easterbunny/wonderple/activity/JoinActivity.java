@@ -158,7 +158,7 @@ public class JoinActivity extends ParentActivity {
             case R.id.btn_back:
                 onBackPressed();
                 break;
-            case R.id.btn_confirm:
+            case R.id.btn_report:
                 requestSignUp();
                 break;
         }

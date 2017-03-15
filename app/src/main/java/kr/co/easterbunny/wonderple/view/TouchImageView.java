@@ -25,6 +25,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -38,7 +39,7 @@ import android.widget.Scroller;
 import kr.co.easterbunny.wonderple.R;
 
 
-public class TouchImageView extends ImageView {
+public class TouchImageView extends AppCompatImageView {
 
     private static final float SUPER_MIN_MULTIPLIER = .25f;
     private static final float SUPER_MAX_MULTIPLIER = 5f;

@@ -42,7 +42,7 @@ public class LoadMainResult {
         private String ratio;
 
         @SerializedName("random_num")
-        private String random_num;
+        private String randomNum;
 
         @SerializedName("user")
         private User user;
@@ -56,8 +56,8 @@ public class LoadMainResult {
         public String getRatio() {
             return ratio;
         }
-        public String getRandom_num() {
-            return random_num;
+        public String getRandomNum() {
+            return randomNum;
         }
         public User getUser() {
             return user;

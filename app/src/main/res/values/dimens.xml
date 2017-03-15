@@ -40,6 +40,8 @@
 
     <dimen name="navigation_icon_width">9.3dp</dimen>
     <dimen name="navigation_icon_height">17.3dp</dimen>
+    <dimen name="post_detail_navigation_icon_width">11dp</dimen>
+    <dimen name="post_detail_navigation_icon_height">19dp</dimen>
 
     <dimen name="signup_layout_width">300dp</dimen>
     <dimen name="signup_layout_height">52dp</dimen>
@@ -62,6 +64,16 @@
 
     <dimen name="home_center_logo_width">131dp</dimen>
     <dimen name="home_center_logo_height">138dp</dimen>
+    <dimen name="home_post_username_margin_bottom">76dp</dimen>
+    
+    <dimen name="post_detail_profile_image_size">22dp</dimen>
+    <dimen name="post_detail_cosmetic_listview_height">124dp</dimen>
+    <dimen name="btn_report_width">21dp</dimen>
+    <dimen name="btn_report_height">3dp</dimen>
+    <dimen name="post_detail_listview_img_tag_size">6dp</dimen>
+    <dimen name="post_detail_count_img_dot_size">4dp</dimen>
+    <dimen name="post_detail_textview_posts_width">328dp</dimen>
+    <dimen name="post_detail_bottom_bg_imageview_height">51dp</dimen>
 
 
 </resources>
