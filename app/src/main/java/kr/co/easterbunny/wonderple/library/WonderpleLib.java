@@ -159,17 +159,10 @@ public class WonderpleLib
 
     public String func01_loadUsernameCheckSNSAndUDID(Context context)
     {
-        if(currentUser.user.snsid != null  && !"".equals(currentUser.user.snsid))
-        {
-            return currentUser.user.snsid;
-        }
-        else if(currentUser.user.username != null  && !"".equals(currentUser.user.username))
+
+        if(currentUser.user.username != null  && !"".equals(currentUser.user.username))
         {
             return currentUser.user.username;
-        }
-        else if(currentUser.user.udid != null  && !"".equals(currentUser.user.udid))
-        {
-            return currentUser.user.udid;
         }
 
         return "";

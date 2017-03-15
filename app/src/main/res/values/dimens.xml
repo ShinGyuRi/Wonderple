@@ -67,13 +67,18 @@
     <dimen name="home_post_username_margin_bottom">76dp</dimen>
     
     <dimen name="post_detail_profile_image_size">22dp</dimen>
-    <dimen name="post_detail_cosmetic_listview_height">124dp</dimen>
+    <dimen name="post_detail_cosmetic_recyclerview_height">124dp</dimen>
     <dimen name="btn_report_width">21dp</dimen>
     <dimen name="btn_report_height">3dp</dimen>
-    <dimen name="post_detail_listview_img_tag_size">6dp</dimen>
+    <dimen name="post_detail_recyclerview_img_tag_size">6dp</dimen>
     <dimen name="post_detail_count_img_dot_size">4dp</dimen>
     <dimen name="post_detail_textview_posts_width">328dp</dimen>
     <dimen name="post_detail_bottom_bg_imageview_height">51dp</dimen>
-
+    <dimen name="post_detail_recyclerview_padding_top">14dp</dimen>
+    <dimen name="post_detail_recyclerview_padding_side">16dp</dimen>
+    <dimen name="post_detail_recyclerview_padding_bottom">30dp</dimen>
+    <dimen name="post_detail_recyclerview_tag_dot_margin_top">14dp</dimen>
+    <dimen name="post_detail_recyclerview_tag_item_img_size">80dp</dimen>
+    <dimen name="post_detail_recyclerview_tag_item_img_margin_side">8dp</dimen>
 
 </resources>

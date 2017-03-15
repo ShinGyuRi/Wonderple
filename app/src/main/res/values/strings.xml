@@ -46,6 +46,9 @@
     <string name="str_find_password_toast_certification">이메일 인증을 먼저 진행하세요</string>
     <string name="str_home_default_display_guide">팔로잉 하는 유저와 내가 올린 원더플한 포스팅이\n최신 업데이트 순으로 보여집니다.</string>
     <string name="str_home_btn_browse">둘러보기</string>
+    <string name="str_post_detail_wonderple_count">원더플 %1$s개</string>
+    <string name="str_post_detail_wonder_count">원더 %1$s개</string>
+    <string name="str_post_detail_comment_count">댓글 %1$s개</string>
 
     <string name="policy_privacy_url">http://easterbunny.co.kr/policy/privacy.html</string>
     <string name="policy_service_url">http://easterbunny.co.kr/policy/service.html</string>

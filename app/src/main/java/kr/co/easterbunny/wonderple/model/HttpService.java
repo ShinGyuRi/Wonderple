@@ -53,4 +53,9 @@ public interface HttpService {
     @FormUrlEncoded
     @POST("loadmain_android.php")
     Call<LoadMainResult> loadMain(@Field("uid") String uid);
+
+    @FormUrlEncoded
+    @POST("loaddata_android.php")
+    Call<LoadPostResult> loadPost(@Field("iid") String iid,
+                                  @Field("uid") String uid);
 }

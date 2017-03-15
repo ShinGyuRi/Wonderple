@@ -2,6 +2,7 @@ package kr.co.easterbunny.wonderple.fragment;
 
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import kr.co.easterbunny.wonderple.R;
+import kr.co.easterbunny.wonderple.activity.PostDetailActivity;
 import kr.co.easterbunny.wonderple.adapter.PostAdapter;
 import kr.co.easterbunny.wonderple.databinding.FragmentHomeBinding;
 import kr.co.easterbunny.wonderple.library.ParentFragment;

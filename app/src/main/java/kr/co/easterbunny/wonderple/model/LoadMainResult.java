@@ -17,11 +17,8 @@ public class LoadMainResult {
         return postImages;
     }
 
-    @SerializedName("result")
-    private String result;
-
-    @SerializedName("message")
-    private String message;
+    @SerializedName("result") private String result;
+    @SerializedName("message") private String message;
 
     public String getResult() {
         return result;
@@ -32,20 +29,11 @@ public class LoadMainResult {
 
     public class PostImage {
 
-        @SerializedName("id")
-        private String id;
-
-        @SerializedName("name")
-        private String ImageUrl;
-
-        @SerializedName("ratio")
-        private String ratio;
-
-        @SerializedName("random_num")
-        private String randomNum;
-
-        @SerializedName("user")
-        private User user;
+        @SerializedName("id") private String id;
+        @SerializedName("name") private String ImageUrl;
+        @SerializedName("ratio") private String ratio;
+        @SerializedName("random_num") private String randomNum;
+        @SerializedName("user") private User user;
 
         public String getId() {
             return id;
@@ -72,11 +60,9 @@ public class LoadMainResult {
             public String getUid() {
                 return uid;
             }
-
             public String getName() {
                 return name;
             }
-
             public String getProfileImage() {
                 return profileImage;
             }

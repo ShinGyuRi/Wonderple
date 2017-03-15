@@ -1,6 +1,7 @@
 package kr.co.easterbunny.wonderple.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import kr.co.easterbunny.wonderple.R;
+import kr.co.easterbunny.wonderple.activity.PostDetailActivity;
 import kr.co.easterbunny.wonderple.databinding.ViewPostItemBinding;
 import kr.co.easterbunny.wonderple.library.util.ImageUtil;
 import kr.co.easterbunny.wonderple.library.util.JSLog;
@@ -75,9 +77,22 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.BindingHolder>
         Glide.with(context)
                 .load(postImages.get(position).getImageUrl())
                 .thumbnail(0.1f)
-                .centerCrop()
                 .into(holder.binding.imgPost);
         holder.binding.txtUsername.setText(postImages.get(position).getUser().getName());
+
+        holder.binding.imgPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, PostDetailActivity.class);
+                intent.putExtra("iid", postImages.get(position).getId());
+                intent.putExtra("uid", postImages.get(position).getUser().getUid());
+                intent.putExtra("profileImgPath", postImages.get(position).getUser().getProfileImage());
+                intent.putExtra("username", postImages.get(position).getUser().getName());
+                intent.putExtra("imgUrl", postImages.get(position).getImageUrl());
+                intent.putExtra("positionHeight", positionHeight);
+                context.startActivity(intent);
+            }
+        });
     }
 
 
