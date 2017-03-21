@@ -49,6 +49,8 @@
     <string name="str_post_detail_wonderple_count">원더플 %1$s개</string>
     <string name="str_post_detail_wonder_count">원더 %1$s개</string>
     <string name="str_post_detail_comment_count">댓글 %1$s개</string>
+    <string name="str_post_detail_comment_send">전송</string>
+    <string name="str_post_detail_pre_comment_all_see">이전 댓글 모두보기</string>
 
     <string name="policy_privacy_url">http://easterbunny.co.kr/policy/privacy.html</string>
     <string name="policy_service_url">http://easterbunny.co.kr/policy/service.html</string>
@@ -76,5 +78,6 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_main2">Main2Activity</string>
 
 </resources>

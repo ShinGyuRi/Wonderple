@@ -15,47 +15,63 @@ public interface HttpService {
 
 
     @FormUrlEncoded
-    @POST("logincheck_android.php")
+    @POST("logincheck_an.php")
     Call<JsonObject> loginCheck(@Field("name") String name,
                             @Field("type") String type,
                             @Field("idnum") String idNum);
 
     @FormUrlEncoded
-    @POST("logincheck_email_android.php")
+    @POST("logincheck_email_an.php")
     Call<JsonObject>  loginCheckEmail(@Field("email") String email,
                                    @Field("type") String type,
                                    @Field("password") String password);
 
     @FormUrlEncoded
-    @POST("pushregister_android.php")
+    @POST("pushregister_an.php")
     Call<JsonObject> pushRegister(@Field("uid") String uid,
                               @Field("pushid") String pushId,
                               @Field("picture") String picture);
 
     @FormUrlEncoded
-    @POST("signup_android.php")
+    @POST("signup_an.php")
     Call<JsonObject> signUp(@Field("name") String name,
                             @Field("type") String type,
                             @Field("picture") String picture,
                             @Field("idnum") String idNum);
 
     @FormUrlEncoded
-    @POST("signup_email_android.php")
+    @POST("signup_email_an.php")
     Call<JsonObject> signUpEmail(@Field("email") String email,
                              @Field("name") String name,
                              @Field("password") String password,
                              @Field("type") String type);
 
     @FormUrlEncoded
-    @POST("pwrequest_android.php")
+    @POST("pwrequest_an.php")
     Call<JsonObject> pwRequest(@Field("email") String email);
 
     @FormUrlEncoded
-    @POST("loadmain_android.php")
+    @POST("loadmain_an.php")
     Call<LoadMainResult> loadMain(@Field("uid") String uid);
 
     @FormUrlEncoded
-    @POST("loaddata_android.php")
+    @POST("loaddata_an.php")
     Call<LoadPostResult> loadPost(@Field("iid") String iid,
                                   @Field("uid") String uid);
+
+    @FormUrlEncoded
+    @POST("loadcomment_an.php")
+    Call<LoadCommentResult> loadComment(@Field("iid") String iid,
+                                        @Field("uid") String uid);
+
+    @FormUrlEncoded
+    @POST("loadnextcomment_an.php")
+    Call<LoadCommentResult> loadNextComment(@Field("iid") String iid,
+                                            @Field("uid") String uid,
+                                            @Field("num") String num);
+
+    @FormUrlEncoded
+    @POST("loadtaguserlist_an.php")
+    Call<LoadMentionUserListResult> loadUserList(@Field("iid") String iid,
+                                                 @Field("uid") String uid);
 }

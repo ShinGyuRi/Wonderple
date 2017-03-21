@@ -21,8 +21,13 @@
     <color name="egg_shell">#EFEEED</color>
 
     <color name="text_hint">#696969</color>
+    <color name="before_day">#585858</color>
     <color name="text_policy_event">#1E419B</color>
+    <color name="link">#3F51B5</color>
     <color name="selected_text">#6b6b6b</color>
-    <color name="disable_text">#dbdbdb</color>
+    <color name="disable_text">#DBDBDB</color>
     <color name="warning">#FF2302</color>
+    <color name="text_pre_comment">#D2D2D2</color>
+
+    <color name="mentions_default_color">#f16421</color>
 </resources>

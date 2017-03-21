@@ -87,6 +87,9 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.2.2'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
+    compile 'com.github.fobid:linkable-text:0.1.4'
+    compile 'com.github.carlonzo.stikkyheader:core:0.0.3-SNAPSHOT'
+    compile 'co.dift.ui.swipetoaction:library:1.1'
     testCompile 'junit:junit:4.12'
 }
 

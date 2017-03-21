@@ -11,13 +11,13 @@
             android:id="@+id/img_tag_item"
             android:layout_width="@dimen/post_detail_recyclerview_tag_item_img_size"
             android:layout_height="@dimen/post_detail_recyclerview_tag_item_img_size"
-            android:layout_marginLeft="@dimen/post_detail_recyclerview_tag_item_img_margin_side"
-            android:layout_marginRight="@dimen/post_detail_recyclerview_tag_item_img_margin_side"/>
+            android:layout_marginLeft="@dimen/post_detail_recyclerview_tag_item_img_margin_left"/>
 
         <ImageView
             android:id="@+id/img_dot"
             android:layout_width="@dimen/post_detail_recyclerview_img_tag_size"
             android:layout_height="@dimen/post_detail_recyclerview_img_tag_size"
+            android:layout_marginLeft="8dp"
             android:layout_gravity="center"
             android:background="@drawable/posting_tagbox"
             android:layout_marginTop="@dimen/post_detail_recyclerview_tag_dot_margin_top"/>

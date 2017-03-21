@@ -38,7 +38,7 @@
             android:layout_height="@dimen/navigation_icon_height"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="13dp"
             android:src="@drawable/login_back"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -51,12 +51,12 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="13dp"
+            android:layout_marginTop="14dp"
             android:text="@string/str_login_join"
             android:textColor="@color/black"
             android:textSize="16sp"
             app:customFont="Roboto-Medium"
-            app:layout_constraintHorizontal_bias="0.457"
+            app:layout_constraintHorizontal_bias="0.459"
             app:layout_constraintLeft_toRightOf="@+id/imageView4"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

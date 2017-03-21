@@ -74,7 +74,11 @@
         <activity android:name=".activity.JoinActivity" />
         <activity android:name=".activity.FindPasswordActivity" />
         <activity android:name=".activity.PolicyActivity" />
-        <activity android:name=".activity.PostDetailActivity"></activity>
+        <activity android:name=".activity.PostDetailActivity" />
+        <activity
+            android:name=".activity.Main2Activity"
+            android:label="@string/title_activity_main2"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

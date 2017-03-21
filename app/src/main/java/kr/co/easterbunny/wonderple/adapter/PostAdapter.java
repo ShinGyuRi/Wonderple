@@ -78,7 +78,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.BindingHolder>
                 .load(postImages.get(position).getImageUrl())
                 .thumbnail(0.1f)
                 .into(holder.binding.imgPost);
-        holder.binding.txtUsername.setText(postImages.get(position).getUser().getName());
+        holder.binding.tvUsername.setText(postImages.get(position).getUser().getName());
 
         holder.binding.imgPost.setOnClickListener(new View.OnClickListener() {
             @Override

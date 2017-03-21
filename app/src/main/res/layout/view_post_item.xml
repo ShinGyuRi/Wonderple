@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <LinearLayout
@@ -26,10 +27,12 @@
                 android:layout_marginBottom="@dimen/home_post_image_margin_bottom"/>
 
             <TextView
-                android:id="@+id/txt_username"
+                android:id="@+id/tv_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/home_post_username_margin_bottom"/>
+                android:layout_marginBottom="@dimen/home_post_username_margin_bottom"
+                android:textSize="13sp"
+                android:textColor="@color/black"/>
         </LinearLayout>
 
 

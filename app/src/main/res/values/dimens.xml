@@ -2,7 +2,7 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    
+
     <dimen name="between_image">1dp</dimen>
 
     <dimen name="guideline_thickness">3px</dimen>
@@ -55,18 +55,18 @@
 
     <dimen name="fragment_policy_padding_top">23dp</dimen>
     <dimen name="fragment_policy_padding_side">16dp</dimen>
-    
+
     <dimen name="home_post_image_width">222dp</dimen>
     <dimen name="home_post_image_margin_bottom">6dp</dimen>
-    
+
     <dimen name="title_bar_height">48dp</dimen>
     <dimen name="title_bar_back_height">44dp</dimen>
 
     <dimen name="home_center_logo_width">131dp</dimen>
     <dimen name="home_center_logo_height">138dp</dimen>
     <dimen name="home_post_username_margin_bottom">76dp</dimen>
-    
-    <dimen name="post_detail_profile_image_size">22dp</dimen>
+
+    <dimen name="post_detail_profile_image_size">24dp</dimen>
     <dimen name="post_detail_cosmetic_recyclerview_height">124dp</dimen>
     <dimen name="btn_report_width">21dp</dimen>
     <dimen name="btn_report_height">3dp</dimen>
@@ -79,6 +79,19 @@
     <dimen name="post_detail_recyclerview_padding_bottom">30dp</dimen>
     <dimen name="post_detail_recyclerview_tag_dot_margin_top">14dp</dimen>
     <dimen name="post_detail_recyclerview_tag_item_img_size">80dp</dimen>
-    <dimen name="post_detail_recyclerview_tag_item_img_margin_side">8dp</dimen>
+    <dimen name="post_detail_recyclerview_tag_item_img_margin_left">16dp</dimen>
+    <dimen name="post_detail_content_comment_recyclerview_item_profile_img_size">30dp</dimen>
+    <dimen name="post_detail_content_comment_item_height">58dp</dimen>
+    <dimen name="post_detail_content_comment_item_text_width">286dp</dimen>
+    <dimen name="post_detail_content_comment_item_bottom_line_width">302dp</dimen>
+    <dimen name="floating_btn_size">56dp</dimen>
+    <dimen name="mention_bg_width">232dp</dimen>
+    <dimen name="mention_bg_height">208dp</dimen>
+    <dimen name="mention_user_list_width">208dp</dimen>
+    <dimen name="mention_user_list_height">160dp</dimen>
+    <dimen name="mention_user_list_item_height">40dp</dimen>
+    <dimen name="post_detail_btn_top_width">67dp</dimen>
+    <dimen name="post_detail_btn_top_height">24dp</dimen>
+    <dimen name="post_detail_comment_header_height">38dp</dimen>
 
 </resources>

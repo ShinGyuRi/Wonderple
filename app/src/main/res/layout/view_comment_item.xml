@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <android.support.constraint.ConstraintLayout
+        android:tag="front"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/img_profile"
+            android:layout_width="@dimen/post_detail_content_comment_recyclerview_item_profile_img_size"
+            android:layout_height="@dimen/post_detail_content_comment_recyclerview_item_profile_img_size"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/postting_profile"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <kr.co.easterbunny.wonderple.view.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="8dp"
+            android:text="username"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:customFont="Roboto-Regular"
+            app:layout_constraintLeft_toRightOf="@+id/img_profile"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/tv_username" />
+
+        <kr.co.easterbunny.wonderple.view.CustomTextView
+            android:id="@+id/tv_before_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="before day"
+            android:textColor="@color/before_day"
+            android:textSize="12sp"
+            app:customFont="Roboto-Medium"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/tv_username"
+            android:layout_marginLeft="6dp" />
+
+        <com.github.fobid.linkabletext.widget.LinkableTextView
+            android:id="@+id/tv_comment"
+            android:layout_width="@dimen/post_detail_content_comment_item_text_width"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="58dp"
+            android:layout_marginTop="32dp"
+            android:fontFamily="sans-serif-light"
+            android:text="comment"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textColorLink="@color/link"
+            app:enabledUnderlines="false"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="@dimen/post_detail_content_comment_item_bottom_line_width"
+            android:layout_height="0.7dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/disable_text"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_comment" />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>
