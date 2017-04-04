@@ -23,7 +23,7 @@
             android:layout_height="4dp"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="22dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/posting_tagbox"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view2" />

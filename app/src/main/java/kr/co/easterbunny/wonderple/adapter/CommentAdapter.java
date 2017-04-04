@@ -3,8 +3,6 @@ package kr.co.easterbunny.wonderple.adapter;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,17 +12,12 @@ import com.github.fobid.linkabletext.view.OnLinkClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import kr.co.easterbunny.wonderple.R;
 import kr.co.easterbunny.wonderple.databinding.ViewCommentItemBinding;
-import kr.co.easterbunny.wonderple.library.util.TimeUtils;
 import kr.co.easterbunny.wonderple.library.util.Toaster;
-import kr.co.easterbunny.wonderple.model.CalloutLink;
 import kr.co.easterbunny.wonderple.model.CustomBitmapPool;
-import kr.co.easterbunny.wonderple.model.Hashtag;
 import kr.co.easterbunny.wonderple.model.LoadCommentResult;
 
 /**
@@ -43,10 +36,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.BindingH
         public BindingHolder(View itemView) {
             super(itemView);
             binding = DataBindingUtil.bind(itemView);
-        }
-
-        public ViewCommentItemBinding getBinding() {
-            return binding;
         }
     }
 
@@ -69,16 +58,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.BindingH
                 .bitmapTransform(new CropCircleTransformation(new CustomBitmapPool()))
                 .into(holder.binding.imgProfile);
 
-        int dDay = TimeUtils.dDay(comments.get(position).getDate());
-        String beforeDay;
-
-        if (dDay < 31 && dDay > 0)  {   beforeDay = context.getResources().getString(R.string.str_post_detail_comment_dday, String.valueOf(dDay));  }
-        else if (dDay == 0)         {   beforeDay = "오늘";   }
-        else                        {   beforeDay = comments.get(position).getDate();   }
-
-
         holder.binding.tvUsername.setText(comments.get(position).getName());
-        holder.binding.tvBeforeDay.setText(beforeDay);
+        holder.binding.tvBeforeDay.setText(comments.get(position).getDate());
         holder.binding.tvComment.setText(comments.get(position).getDetail());
 
         holder.binding.tvComment.setOnLinkClickListener(new OnLinkClickListener() {
@@ -107,6 +88,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.BindingH
 
             }
         });
+
     }
 
     @Override

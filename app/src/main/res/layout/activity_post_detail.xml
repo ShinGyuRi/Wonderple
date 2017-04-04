@@ -8,7 +8,6 @@
     </data>
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/layout_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
@@ -66,13 +65,12 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <View
-            android:id="@+id/btn_follow_report"
+            android:id="@+id/btn_report"
             android:layout_width="60dp"
             android:layout_height="44dp"
             android:gravity="center"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/view"
-            android:onClick="@{postDetail.onClick}"/>
+            app:layout_constraintTop_toTopOf="@+id/view" />
 
         <ImageView
             android:layout_width="21dp"
@@ -81,7 +79,7 @@
             android:layout_marginRight="16dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/btn_report"
-            app:layout_constraintRight_toRightOf="@+id/btn_follow_report"
+            app:layout_constraintRight_toRightOf="@+id/btn_report"
             app:layout_constraintTop_toTopOf="@+id/view" />
 
         <android.support.v4.widget.NestedScrollView
@@ -136,7 +134,7 @@
                     android:layout_height="4dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="18dp"
+                    android:layout_marginTop="16dp"
                     android:background="@drawable/posting_tagbox"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/rv_tag_item" />
@@ -175,13 +173,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="5dp"
                     android:text="DATE"
                     android:textColor="@color/text_hint"
                     android:textSize="13sp"
                     app:customFont="Roboto-Regular"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rv_tag_item"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_wonderple"
                     android:layout_marginStart="16dp" />
 
                 <com.github.fobid.linkabletext.widget.LinkableTextView
@@ -222,8 +220,7 @@
             android:layout_marginRight="4dp"
             android:layout_marginBottom="1dp"
             app:layout_constraintBottom_toTopOf="@+id/btn_comment"
-            android:layout_marginEnd="4dp"
-            android:onClick="@{postDetail.onClick}"/>
+            android:layout_marginEnd="4dp" />
 
 
         <ImageView
@@ -235,51 +232,16 @@
             app:layout_constraintBottom_toTopOf="@+id/btn_comment"
             android:layout_marginRight="12dp"
             app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginEnd="12dp"
-            android:onClick="@{postDetail.onClick}"/>
+            android:layout_marginEnd="12dp" />
 
         <ImageView
+            android:id="@+id/btn_comment"
             android:layout_width="0dp"
             android:layout_height="51dp"
             android:background="@drawable/posting_tab_bar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
-        
-        <ImageView
-            android:layout_width="@dimen/post_detail_btn_bottom_width"
-            android:layout_height="@dimen/post_detail_btn_bottom_height"
-            android:background="@drawable/posting_tab_wonderple_n"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="0dp"
-            android:layout_marginLeft="27dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:onClick="@{postDetail.onClick}"
-            android:id="@+id/btn_wonderple" />
-
-        <ImageView
-            android:layout_width="@dimen/post_detail_btn_bottom_width"
-            android:layout_height="@dimen/post_detail_btn_bottom_height"
-            android:background="@drawable/posting_tab_wonder_n"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="0dp"
-            android:layout_marginLeft="8dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginRight="8dp"
-            app:layout_constraintRight_toRightOf="parent"
-            android:onClick="@{postDetail.onClick}"
-            android:id="@+id/btn_wonder"/>
-
-        <ImageView
-            android:layout_width="@dimen/post_detail_btn_bottom_width"
-            android:layout_height="@dimen/post_detail_btn_bottom_height"
-            android:background="@drawable/posting_tab_comment_n"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="0dp"
-            android:layout_marginRight="26dp"
-            app:layout_constraintRight_toRightOf="parent"
-            android:onClick="@{postDetail.onClick}"
-            android:id="@+id/btn_comment"/>
 
         <include
             android:id="@+id/layout_user_list"
@@ -297,6 +259,7 @@
             layout="@layout/content_comment_edittext"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"/>

@@ -14,10 +14,9 @@ public class KeyboardUtils {
 
 
 
-    public static void showKeyboard() {
+    public static void showKeyboard(EditText editText) {
         InputMethodManager imm = (InputMethodManager) BaseApplication.getInstance().getSystemService(Context.INPUT_METHOD_SERVICE);
-//        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
     }
 
 

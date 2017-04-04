@@ -271,7 +271,7 @@ public class StringUtils {
      *  {@code null} if null String input
      * @since 2.0
      */
-    public static String substringAfterLast(final String str, final String separator) {
+    static String substringAfterLast(final String str, final String separator) {
         if (isEmpty(str)) {
             return str;
         }
@@ -360,7 +360,7 @@ public class StringUtils {
      * @since 2.4
      * @since 3.0 Changed signature from startsWith(String, String) to startsWith(CharSequence, CharSequence)
      */
-    public static boolean startsWith(final CharSequence str, final CharSequence prefix) {
+    static boolean startsWith(final CharSequence str, final CharSequence prefix) {
         return startsWith(str, prefix, false);
     }
 

@@ -19,6 +19,10 @@ public class RecyclerViewOnItemClickListener extends RecyclerView.SimpleOnItemTo
         this.mListener = listener;
 
         mGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                return true;
+            }
 
             @Override
             public void onLongPress(MotionEvent e) {
