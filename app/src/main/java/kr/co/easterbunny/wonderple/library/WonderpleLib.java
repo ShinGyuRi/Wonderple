@@ -157,12 +157,21 @@ public class WonderpleLib
 
 
 
-    public String func01_loadUsernameCheckSNSAndUDID(Context context)
+    public String func01_loadUsername(Context context)
     {
 
         if(currentUser.user.username != null  && !"".equals(currentUser.user.username))
         {
             return currentUser.user.username;
+        }
+
+        return "";
+    }
+
+    public String func01_loadUid(Context context)
+    {
+        if (currentUser.user.udid != null && !"".equals(currentUser.user.udid)) {
+            return currentUser.user.udid;
         }
 
         return "";

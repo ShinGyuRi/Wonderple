@@ -3,6 +3,7 @@ package kr.co.easterbunny.wonderple.library.util;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
 /**
@@ -38,28 +39,25 @@ public class TimeUtils {
         return difference;
     }
 
-    public static int dDay(int myear, int mmonth, int mday) {
-        try {
-            Calendar today = Calendar.getInstance(); //현재 오늘 날짜
-            Calendar dday = Calendar.getInstance();
 
+    public static int dDay(String mday)    {
+        if (mday == null)
+            return 0;
 
-            dday.set(myear,mmonth,mday);// D-day의 날짜를 입력합니다.
+        mday = mday.trim();
 
+        int first = mday.indexOf("-");
+        int last = mday.lastIndexOf("-");
+        int year = Integer.parseInt(mday.substring(0, first));
+        int month = Integer.parseInt(mday.substring(first + 1, last));
+        int day = Integer.parseInt(mday.substring(last + 1, mday.length()));
 
-            long day = dday.getTimeInMillis()/86400000;
-            // 각각 날의 시간 값을 얻어온 다음
-            //( 1일의 값(86400000 = 24시간 * 60분 * 60초 * 1000(1초값) ) )
+        GregorianCalendar cal = new GregorianCalendar();
+        long currentTime = cal.getTimeInMillis() / (1000 * 60 * 60 * 24);
+        cal.set(year, month - 1, day);
+        long birthTime = cal.getTimeInMillis() / (1000 * 60 * 60 * 24);
+        int interval = (int) (birthTime - currentTime) * -1;
 
-
-            long tday = today.getTimeInMillis()/86400000;
-            long count = tday - day; // 오늘 날짜에서 dday 날짜를 빼주게 됩니다.
-            return (int) count+1; // 날짜는 하루 + 시켜줘야합니다.
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return -1;
-        }
+        return interval;
     }
 }

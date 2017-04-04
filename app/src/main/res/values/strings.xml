@@ -12,7 +12,7 @@
     <string name="str_take_picture_from_gallery">Choose from photo album</string>
     <string name="str_check_gps_title">Location Services settings</string>
     <string name="str_check_gps_message">Wireless Network, Wi-fi, and GPS must all be in use to accurately find your location. Would you like to turn on these settings now?</string>
-    <string name="str_cancel">Cancel</string>
+    <string name="str_cancel">취소</string>
     <string name="str_ok">Ok</string>
     <string name="str_login_btn_kakao">카카오톡 로그인</string>
     <string name="str_login_btn_facebook">페이스북 로그인</string>
@@ -51,6 +51,27 @@
     <string name="str_post_detail_comment_count">댓글 %1$s개</string>
     <string name="str_post_detail_comment_send">전송</string>
     <string name="str_post_detail_pre_comment_all_see">이전 댓글 모두보기</string>
+    <string name="str_post_detail_comment_dday">%1$s일 전</string>
+    <string name="str_follow_unfollow">팔로우하기/언팔로우하기</string>
+    <string name="str_report">신고하기</string>
+    <string name="str_post_report">게시물 신고</string>
+    <string name="str_report_option_1">선정적입니다.</string>
+    <string name="str_report_option_2">초상권을 침해합니다.</string>
+    <string name="str_report_option_3">스팸 게시물입니다.</string>
+    <string name="str_report_option_4">불쾌한 내용입니다.</string>
+    <string name="str_report_option_5">무단 광고물입니다.</string>
+    <string name="str_report_option_6">불법적인 내용입니다.</string>
+    <string name="str_report_option_7">기타</string>
+    <string name="str_revise_report_already_call_in_post">이미 신고가 된 게시물입니다.</string>
+    <string name="str_revise_report">신고항목을 수정하시겠습니까?</string>
+    <string name="str_return_report">신고철회</string>
+    <string name="str_revise">수정하기</string>
+    <string name="str_delete">삭제하기</string>
+    <string name="str_undo">Undo</string>
+    <string name="str_remove_comment">댓글이 삭제되었습니다. 복구를 원하시면 터치하세요.</string>
+    <string name="str_comment_report">댓글 신고</string>
+    <string name="str_comment_report_option2">스팸 댓글입니다.</string>
+    <string name="str_comment_revise_already_call_in">이미 신고가 된 댓글입니다.</string>
 
     <string name="policy_privacy_url">http://easterbunny.co.kr/policy/privacy.html</string>
     <string name="policy_service_url">http://easterbunny.co.kr/policy/service.html</string>

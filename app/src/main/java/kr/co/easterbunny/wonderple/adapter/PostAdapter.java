@@ -18,6 +18,7 @@ import java.util.List;
 import kr.co.easterbunny.wonderple.R;
 import kr.co.easterbunny.wonderple.activity.PostDetailActivity;
 import kr.co.easterbunny.wonderple.databinding.ViewPostItemBinding;
+import kr.co.easterbunny.wonderple.library.WonderpleLib;
 import kr.co.easterbunny.wonderple.library.util.ImageUtil;
 import kr.co.easterbunny.wonderple.library.util.JSLog;
 import kr.co.easterbunny.wonderple.model.LoadMainResult;
@@ -85,7 +86,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.BindingHolder>
             public void onClick(View v) {
                 Intent intent = new Intent(context, PostDetailActivity.class);
                 intent.putExtra("iid", postImages.get(position).getId());
-                intent.putExtra("uid", postImages.get(position).getUser().getUid());
+                intent.putExtra("uid", WonderpleLib.getInstance().func01_loadUid(context));
+                intent.putExtra("auid", postImages.get(position).getUser().getUid());
                 intent.putExtra("profileImgPath", postImages.get(position).getUser().getProfileImage());
                 intent.putExtra("username", postImages.get(position).getUser().getName());
                 intent.putExtra("imgUrl", postImages.get(position).getImageUrl());
@@ -102,6 +104,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.BindingHolder>
             return 0;
         }
         return postImages.size();
+    }
+
+    public void add(List<LoadMainResult.PostImage> nextPostImages) {
+        postImages.addAll(nextPostImages);
+        notifyDataSetChanged();
     }
 
 

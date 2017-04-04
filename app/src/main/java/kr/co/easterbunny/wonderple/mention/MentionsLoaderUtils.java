@@ -39,7 +39,7 @@ public class MentionsLoaderUtils {
     }
 
     /**
-     * Loads users from JSON file.
+     * Loads users
      */
     private void loadUsers() {
         Call<LoadMentionUserListResult> loadMentionUserListResultCall = NetworkUtil.getInstace().loadUserList(iid, uid);

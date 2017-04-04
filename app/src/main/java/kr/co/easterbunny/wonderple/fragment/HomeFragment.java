@@ -7,6 +7,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,9 @@ public class HomeFragment extends ParentFragment {
     private String uid;
 
     List<LoadMainResult.PostImage> postImages = new ArrayList<>();
+
+    PostAdapter postAdapter;
+    LinearLayoutManager layoutManager;
 
 
     public HomeFragment() {
@@ -72,6 +76,7 @@ public class HomeFragment extends ParentFragment {
         binding.tvBrowse.setVisibility(View.GONE);
 
         loadPostImage();
+        loadMorePostImage();
 
         return view;
     }
@@ -100,8 +105,11 @@ public class HomeFragment extends ParentFragment {
 
                         postImages = loadMainResult.getPostImages();
 
-                        binding.recyclerviewPostImage.setAdapter(new PostAdapter(getContext(), postImages));
-                        binding.recyclerviewPostImage.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        postAdapter = new PostAdapter(getContext(), postImages);
+                        layoutManager = new LinearLayoutManager(getActivity());
+
+                        binding.recyclerviewPostImage.setAdapter(postAdapter);
+                        binding.recyclerviewPostImage.setLayoutManager(layoutManager);
 
                     } else {
                         binding.tvFollowingGuide.setVisibility(View.VISIBLE);
@@ -116,6 +124,50 @@ public class HomeFragment extends ParentFragment {
             @Override
             public void onFailure(Call<LoadMainResult> call, Throwable t) {
                 JSLog.E("failed Load main ::::: "+t.getMessage(), new Throwable());
+            }
+        });
+    }
+
+
+
+    int pastVisibleItems, visibleItemCount, totalItemCount;
+    private boolean loading = true;
+
+    private void loadMorePostImage() {
+        int loadCount = 1;
+
+        binding.recyclerviewPostImage.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) {
+                    visibleItemCount = layoutManager.getChildCount();
+                    totalItemCount = layoutManager.getItemCount();
+                    pastVisibleItems = layoutManager.findFirstVisibleItemPosition();
+
+                    if (loading) {
+                        if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                            loading = false;
+
+                            Call<LoadMainResult> loadMainResultCall = NetworkUtil.getInstace().loadMoreMain(uid, String.valueOf(loadCount));
+                            loadMainResultCall.enqueue(new Callback<LoadMainResult>() {
+                                @Override
+                                public void onResponse(Call<LoadMainResult> call, Response<LoadMainResult> response) {
+                                    LoadMainResult loadMainResult = response.body();
+                                    String messae = loadMainResult.getMessage();
+
+                                    if ("the main load succeeded".equals(messae)) {
+                                        postAdapter.add(loadMainResult.getPostImages());
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<LoadMainResult> call, Throwable t) {
+
+                                }
+                            });
+                        }
+                    }
+                }
             }
         });
     }

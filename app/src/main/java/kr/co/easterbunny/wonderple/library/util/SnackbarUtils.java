@@ -18,13 +18,13 @@ import kr.co.easterbunny.wonderple.library.BaseApplication;
  * Created by scona on 2017-01-13.
  */
 
-public class ErrorUtils {
+public class SnackbarUtils {
 
     private static final String NO_CONNECTION_ERROR = "Connection failed. Please check your internet connection.";
     private static final String NO_RESPONSE_TIMEOUT = "No response received within reply timeout.";
     private static Handler mainThreadHandler = new Handler(Looper.getMainLooper());
 
-    private ErrorUtils() {
+    private SnackbarUtils() {
     }
 
     public static Snackbar showSnackbar(View view, @StringRes int errorMessage, Exception e,
@@ -55,6 +55,7 @@ public class ErrorUtils {
                                         View.OnClickListener clickListener) {
         Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_INDEFINITE);
         snackbar.setAction(actionLabel, clickListener);
+        snackbar.setDuration(2000);
         snackbar.show();
         return snackbar;
     }

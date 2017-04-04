@@ -121,6 +121,10 @@ public class LoadPostResult {
 
     public class WonderCategory {
         @SerializedName("wondercategory") String wonderCategory;
+
+        public String getWonderCategory() {
+            return wonderCategory;
+        }
     }
 
 

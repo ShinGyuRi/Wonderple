@@ -49,6 +49,7 @@ import kr.co.easterbunny.wonderple.library.util.JSLog;
 import kr.co.easterbunny.wonderple.library.util.NetworkUtil;
 import kr.co.easterbunny.wonderple.library.util.PrefUtil;
 import kr.co.easterbunny.wonderple.library.util.TextUtil;
+import kr.co.easterbunny.wonderple.library.util.Toaster;
 import kr.co.easterbunny.wonderple.model.SignInResult;
 import kr.co.easterbunny.wonderple.model.User;
 import kr.co.easterbunny.wonderple.view.CustomTextView;
@@ -412,6 +413,7 @@ public class ParentActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toaster.shortToast("네트워크 상태를 확인해주세요");
             }
         });
     }
@@ -436,6 +438,7 @@ public class ParentActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toaster.shortToast("네트워크 상태를 확인해주세요");
             }
         });
     }
