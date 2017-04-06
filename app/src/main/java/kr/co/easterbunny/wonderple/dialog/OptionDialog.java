@@ -1,4 +1,4 @@
-package kr.co.easterbunny.wonderple.view;
+package kr.co.easterbunny.wonderple.dialog;
 
 import android.app.Dialog;
 import android.content.Context;

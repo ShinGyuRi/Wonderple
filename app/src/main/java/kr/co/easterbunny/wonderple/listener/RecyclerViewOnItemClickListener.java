@@ -1,6 +1,7 @@
 package kr.co.easterbunny.wonderple.listener;
 
 import android.content.Context;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -37,12 +38,26 @@ public class RecyclerViewOnItemClickListener extends RecyclerView.SimpleOnItemTo
 
     @Override
     public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+        final int action = MotionEventCompat.getActionMasked(e);
+
+        if (action == MotionEvent.ACTION_CANCEL || action == MotionEvent.ACTION_UP) {
+            mGestureDetector.onTouchEvent(e);
+            return false;
+        }
+
+        if (action == MotionEvent.ACTION_MOVE) {
+            return false;
+        }
         View child = rv.findChildViewUnder(e.getX(), e.getY());
         if (child != null && mListener != null && mGestureDetector.onTouchEvent(e)) {
             mListener.onItemClick(child, rv.getChildAdapterPosition(child));
-            return true;
+            return false;
         }
         return false;
+    }
+
+    @Override
+    public void onTouchEvent(RecyclerView rv, MotionEvent e) {
     }
 
     public interface OnItemClickListener {

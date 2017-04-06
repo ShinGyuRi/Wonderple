@@ -1,4 +1,4 @@
-package kr.co.easterbunny.wonderple.view;
+package kr.co.easterbunny.wonderple.dialog;
 
 /**
  * Created by scona on 2017-04-04.

@@ -2,7 +2,7 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="commentRevise" type="kr.co.easterbunny.wonderple.view.CommentReviseOptionDialog"/>
+        <variable name="commentRevise" type="kr.co.easterbunny.wonderple.dialog.CommentReviseOptionDialog"/>
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

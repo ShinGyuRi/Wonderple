@@ -1,16 +1,19 @@
 package kr.co.easterbunny.wonderple.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.bumptech.glide.Glide;
 import com.github.fobid.linkabletext.view.OnLinkClickListener;
+import com.google.gson.JsonObject;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -18,7 +21,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import co.dift.ui.SwipeToAction;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import kr.co.easterbunny.wonderple.R;
 import kr.co.easterbunny.wonderple.adapter.CommentAdapter;
@@ -26,9 +32,14 @@ import kr.co.easterbunny.wonderple.adapter.TagItemAdapter;
 import kr.co.easterbunny.wonderple.adapter.UsersAdapter;
 import kr.co.easterbunny.wonderple.databinding.ActivityPostDetailBinding;
 import kr.co.easterbunny.wonderple.library.ParentActivity;
+import kr.co.easterbunny.wonderple.library.util.AnimationUtil;
+import kr.co.easterbunny.wonderple.library.util.JSLog;
 import kr.co.easterbunny.wonderple.library.util.NetworkUtil;
+import kr.co.easterbunny.wonderple.library.util.SnackbarUtils;
 import kr.co.easterbunny.wonderple.library.util.Toaster;
+import kr.co.easterbunny.wonderple.library.util.Util;
 import kr.co.easterbunny.wonderple.listener.RecyclerItemClickListener;
+import kr.co.easterbunny.wonderple.listener.RecyclerViewOnItemClickListener;
 import kr.co.easterbunny.wonderple.mention.Mentions;
 import kr.co.easterbunny.wonderple.mention.MentionsLoaderUtils;
 import kr.co.easterbunny.wonderple.mention.QueryListener;
@@ -38,16 +49,24 @@ import kr.co.easterbunny.wonderple.model.LoadCommentResult;
 import kr.co.easterbunny.wonderple.model.LoadMentionUserListResult;
 import kr.co.easterbunny.wonderple.model.LoadPostResult;
 import kr.co.easterbunny.wonderple.model.Mention;
+import kr.co.easterbunny.wonderple.dialog.CommentOptionDialog;
+import kr.co.easterbunny.wonderple.dialog.CommentReportDeleteDialog;
+import kr.co.easterbunny.wonderple.dialog.CommentReportDialog;
+import kr.co.easterbunny.wonderple.dialog.CommentReviseOptionDialog;
+import kr.co.easterbunny.wonderple.dialog.OptionDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PostDetailActivity extends ParentActivity implements OnLinkClickListener, QueryListener, SuggestionsListener{
+public class PostDetailActivity extends ParentActivity implements OnLinkClickListener, QueryListener, SuggestionsListener {
 
     private ActivityPostDetailBinding binding;
 
     private List<LoadPostResult.TagItem> tagItems = new ArrayList<>();
     private List<LoadCommentResult.Comment> comments = new ArrayList<>();
+    private List<String> commentId = new ArrayList<>();
+    private List<LoadPostResult.WonderCategory> wonderCategories = new ArrayList<>();
+    private List<String> tagUsers = new ArrayList<>();
 
     private Mentions mentions;
     private MentionsLoaderUtils mentionsLoaderUtils;
@@ -55,16 +74,27 @@ public class PostDetailActivity extends ParentActivity implements OnLinkClickLis
     String username = null;
     String profileImgPath = null;
     String uid = null;
+    String auid = null;
     String iid = null;
     String imageUrl = null;
+//    String commentId = null;
     double positionHeight = 0.0;
+
+    boolean isUndo = false;
 
     String wonderpleCount = null;
     String wonderCount = null;
     String commentCount = null;
+    String checkWonderple = null;
+    String checkWonder = null;
+    String checkComment = null;
 
     private UsersAdapter usersAdapter;
     private CommentAdapter commentAdapter;
+
+    private SwipeToAction swipeToAction;
+
+    LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,11 +102,13 @@ public class PostDetailActivity extends ParentActivity implements OnLinkClickLis
         binding = DataBindingUtil.setContentView(this, R.layout.activity_post_detail);
         binding.setPostDetail(this);
         binding.layoutComment.setContentComment(this);
+        binding.layoutCommentField.setCommentField(this);
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         initView();
         loadPostData(uid, iid);
         setMentionsList();
-        setCommentsList();
         setSendButtonTextWatcher();
 
     }
@@ -90,12 +122,14 @@ public class PostDetailActivity extends ParentActivity implements OnLinkClickLis
         binding.btnMention.setVisibility(View.GONE);
         binding.btnHashtag.setVisibility(View.GONE);
         binding.layoutComment.tvPreComment.setVisibility(View.GONE);
+        binding.layoutCommentField.btnSend.setEnabled(false);
 
         Intent intent = getIntent();
 
         username = intent.getStringExtra("username");
         profileImgPath = intent.getStringExtra("profileImgPath");
         uid = intent.getStringExtra("uid");
+        auid = intent.getStringExtra("auid");
         iid = intent.getStringExtra("iid");
         imageUrl = intent.getStringExtra("imgUrl");
         positionHeight = intent.getDoubleExtra("positionHeight", 1.0);
@@ -121,8 +155,14 @@ public class PostDetailActivity extends ParentActivity implements OnLinkClickLis
                     .thumbnail(0.1f)
                     .into(binding.imgPost);
         }
+
     }
 
+    /**
+     * 게시물 정보 불러오기
+     * @param uid user Id
+     * @param iid image Id
+     */
     private void loadPostData(String uid, String iid) {
 
         Call<LoadPostResult> loadPostResultCall = NetworkUtil.getInstace().loadPost(iid, uid);
@@ -139,22 +179,11 @@ public class PostDetailActivity extends ParentActivity implements OnLinkClickLis
                     String descText = loadPostResult.getPostData().getDescText();
                     String uploadTime = loadPostResult.getPostData().getUploadTime();
 
-                    if (!"0".equals(wonderpleCount) || !"0".equals(wonderCount) || !"0".equals(commentCount)) {
+                    if (!"0".equals(wonderpleCount) || !"0".equals(wonderCount)) {
                         binding.imgDot.setVisibility(View.VISIBLE);
                     }
-                    if (!"0".equals(wonderpleCount)) {
-                        binding.tvWonderple.setText(getString(R.string.str_post_detail_wonderple_count, wonderpleCount));
-                        binding.tvWonderple.setVisibility(View.VISIBLE);
-                    }
-                    if (!"0".equals(wonderCount)) {
-                        binding.tvWonder.setText(getString(R.string.str_post_detail_wonder_count, wonderCount));
-                        binding.tvWonder.setVisibility(View.VISIBLE);
-                    }
-                    if (!"0".equals(commentCount)) {
-                        binding.layoutComment.childLayoutComment.setVisibility(View.VISIBLE);
-                        binding.layoutComment.layoutCommentHeader.tvComment.setText(getString(R.string.str_post_detail_comment_count, commentCount));
-                        binding.layoutComment.tvPreComment.setVisibility(View.VISIBLE);
-                    }
+                    showWonderpleCount(wonderpleCount);
+                    showWonderCount(wonderCount);
 
                     if (!"".equals(descText)) {
                         binding.tvDesc.setVisibility(View.VISIBLE);
@@ -164,8 +193,9 @@ public class PostDetailActivity extends ParentActivity implements OnLinkClickLis
 
                     if (loadPostResult.getTagItems() != null) {
                         tagItems = loadPostResult.getTagItems();
+                        wonderCategories = loadPostResult.getWonderCategories();
 
-                        binding.rvTagItem.setAdapter(new TagItemAdapter(PostDetailActivity.this, tagItems));
+                        binding.rvTagItem.setAdapter(new TagItemAdapter(PostDetailActivity.this, tagItems, wonderCategories));
                         binding.rvTagItem.setLayoutManager(new LinearLayoutManager(PostDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
                     }
 
@@ -183,6 +213,24 @@ public class PostDetailActivity extends ParentActivity implements OnLinkClickLis
 
                         binding.tvDate.setText(outputString);
                     }
+
+                    if (loadPostResult.getPostData() != null) {
+                        checkWonderple = loadPostResult.getPostData().getCheckWonderple();
+                        checkWonder = loadPostResult.getPostData().getCheckWonder();
+                        checkComment = loadPostResult.getPostData().getCheckComment();
+
+                        if (!"0".equals(checkWonderple)) {
+                            binding.btnWonderple.setImageResource(R.drawable.posting_tab_wonderple_p);
+                        }
+                        if (!"0".equals(checkWonder)) {
+                            binding.btnWonder.setImageResource(R.drawable.posting_tab_wonder_p);
+                        }
+                        if (!"0".equals(checkComment)) {
+                            binding.btnComment.setImageResource(R.drawable.posting_tab_comment_p);
+                        }
+                    }
+
+                    setCommentsList();
                 }
 
             }
@@ -211,7 +259,7 @@ public class PostDetailActivity extends ParentActivity implements OnLinkClickLis
                  */
                 if (user != null) {
                     final Mention mention = new Mention();
-                    mention.setMentionName("@"+user.getName());
+                    mention.setMentionName("@" + user.getName());
                     mentions.insertMention(mention);
                 }
             }
@@ -219,7 +267,6 @@ public class PostDetailActivity extends ParentActivity implements OnLinkClickLis
     }
 
     private void setCommentsList() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
         binding.layoutComment.rvComment.setLayoutManager(layoutManager);
@@ -231,8 +278,189 @@ public class PostDetailActivity extends ParentActivity implements OnLinkClickLis
 
         loadComment();
 
+        onLongClickComment();
     }
 
+    private void onLongClickComment() {
+        binding.layoutComment.rvComment.addOnItemTouchListener(new RecyclerViewOnItemClickListener(this, binding.layoutComment.rvComment, new RecyclerViewOnItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+//                binding.layoutCommentField.etInputComment.append("@"+comments.get(position).getName());
+            }
+
+            @Override
+            public void onItemLongClick(View v, int position) {
+                String cid = commentId.get(position);
+                CommentOptionDialog commentOptionDialog = new CommentOptionDialog(PostDetailActivity.this);
+                CommentReviseOptionDialog commentReviseOptionDialog = new CommentReviseOptionDialog(PostDetailActivity.this, cid, uid);
+
+                //남 게시물
+                if (!uid.equals(auid)) {
+                    //남댓글
+                    if (!uid.equals(comments.get(position).getUser())) {
+                        //댓글 신고 수행 후
+                        if (checkCallIn(position)) {
+                            commentReviseOptionDialog.show();
+                        }
+                        //댓글 신고 수행 전
+                        else {
+                            CommentReportDialog commentReportDialog = new CommentReportDialog(PostDetailActivity.this, cid, uid, "0");
+                            commentReportDialog.show();
+                        }
+                    }
+                    //내댓글
+                    else {
+                        commentOptionDialog.show();
+                        //내 댓글 수정
+                        commentOptionDialog.getBinding().btnRevise.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                commentOptionDialog.dismiss();
+                                reviseComment(comments.get(position).getDetail());
+                            }
+                        });
+                        //내 댓글 삭제
+                        commentOptionDialog.getBinding().btnDelete.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                removeComment(cid, position, commentOptionDialog);
+                            }
+                        });
+                    }
+                }
+                //내 게시물
+                else {
+                    //남댓글
+                    if (!uid.equals(comments.get(position).getUser())) {
+                        CommentReportDeleteDialog commentReportDeleteDialog = new CommentReportDeleteDialog(PostDetailActivity.this);
+                        commentOptionDialog.show();
+
+                        commentReportDeleteDialog.getBinding().btnReport.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //댓글 신고 수행 후
+                                if (checkCallIn(position)) {
+                                    commentReviseOptionDialog.show();
+                                }
+                                //댓글 신고 수행 전
+                                else {
+                                    CommentReportDialog commentReportDialog = new CommentReportDialog(PostDetailActivity.this, cid, uid, "0");
+                                    commentReportDialog.show();
+                                }
+                            }
+                        });
+
+                        commentReportDeleteDialog.getBinding().btnDelete.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                commentReportDeleteDialog.dismiss();
+                                removeComment(cid, position, commentReportDeleteDialog);
+                            }
+                        });
+
+                    }
+                    //내댓글
+                    else {
+                        commentOptionDialog.show();
+                        //내 댓글 수정
+                        commentOptionDialog.getBinding().btnRevise.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                reviseComment(comments.get(position).getDetail());
+                            }
+                        });
+                        //내 댓글 삭제
+                        commentOptionDialog.getBinding().btnDelete.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                removeComment(cid, position, commentOptionDialog);
+                            }
+                        });
+                    }
+                }
+            }
+        }));
+    }
+
+    private void displaySnackbar() {
+        SnackbarUtils.showSnackbar(binding.layoutRoot, R.string.str_remove_comment, R.string.str_undo, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isUndo = true;
+                commentAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    private void removeComment(String cid, int position, Dialog dialog) {
+        isUndo = false;
+        dialog.dismiss();
+        commentAdapter.notifyItemRemoved(position);
+        displaySnackbar();
+
+        Util.runDelay(2100, new Runnable() {
+            @Override
+            public void run() {
+                if (!isUndo) {
+                    Call<JsonObject> jsonObjectCall = NetworkUtil.getInstace().commentDelete(cid, "0");
+                    jsonObjectCall.enqueue(new Callback<JsonObject>() {
+                        @Override
+                        public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                            JsonObject jsonObject = response.body();
+                            String message = jsonObject.get("message").toString().replace("\"", "");
+                        }
+
+                        @Override
+                        public void onFailure(Call<JsonObject> call, Throwable t) {
+
+                        }
+                    });
+                }
+            }
+        });
+
+
+    }
+
+    /**
+     * 댓글 수정
+     */
+    private void reviseComment(String comment) {
+        binding.layoutCommentField.childLayoutCommentField.setVisibility(View.VISIBLE);
+        binding.layoutCommentField.etInputComment.setText(comment);
+    }
+
+    /**
+     * 댓글 신고 확인
+     */
+    boolean result = false;
+    private boolean checkCallIn(int position) {
+        Call<JsonObject> jsonObjectCall = NetworkUtil.getInstace().checkCallIn(comments.get(position).getCid(), uid);
+        jsonObjectCall.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                JsonObject jsonObject = response.body();
+                String message = jsonObject.get("message").toString().replace("\"", "");
+
+                if ("a comment callin is selected".equals(message)) {
+                    result = true;
+                } else {
+                    result = false;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+
+            }
+        });
+
+        return result;
+    }
+
+    /**
+     * 댓글 불러오기
+     */
     private void loadComment() {
         Call<LoadCommentResult> loadCommentResultCall = NetworkUtil.getInstace().loadComment(iid, uid);
         loadCommentResultCall.enqueue(new Callback<LoadCommentResult>() {
@@ -242,11 +470,19 @@ public class PostDetailActivity extends ParentActivity implements OnLinkClickLis
                 String message = loadCommentResult.getMessage();
 
                 if ("comment load done".equals(message)) {
+                    showCommentCount(commentCount);
+
                     comments = loadCommentResult.getComments();
 
                     if (comments != null) {
                         commentAdapter = new CommentAdapter(PostDetailActivity.this, comments);
                         binding.layoutComment.rvComment.setAdapter(commentAdapter);
+                        commentAdapter.notifyDataSetChanged();
+                        layoutManager.scrollToPositionWithOffset(commentAdapter.getItemCount(), 0);
+
+                        for (int i=0; i<comments.size(); i++) {
+                            commentId.add(comments.get(i).getCid());
+                        }
                     }
 
                 }
@@ -259,6 +495,9 @@ public class PostDetailActivity extends ParentActivity implements OnLinkClickLis
         });
     }
 
+    /**
+     * 이전 댓글 불러오기
+     */
     private void loadNextComment() {
         Call<LoadCommentResult> loadCommentResultCall = NetworkUtil.getInstace().loadNextComment(iid, uid, "1");
         loadCommentResultCall.enqueue(new Callback<LoadCommentResult>() {
@@ -271,6 +510,10 @@ public class PostDetailActivity extends ParentActivity implements OnLinkClickLis
                     if (loadCommentResult.getComments() != null) {
                         commentAdapter.add(loadCommentResult.getComments());
                         binding.layoutComment.tvPreComment.setVisibility(View.GONE);
+
+                        for (int i=0; i<loadCommentResult.getComments().size(); i++) {
+                            commentId.add(loadCommentResult.getComments().get(i).getCid());
+                        }
                     }
                 }
             }
@@ -283,8 +526,6 @@ public class PostDetailActivity extends ParentActivity implements OnLinkClickLis
     }
 
     private void setSendButtonTextWatcher() {
-        final int hashtagColor = ContextCompat.getColor(PostDetailActivity.this, R.color.link);
-
         binding.layoutCommentField.etInputComment.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -294,7 +535,9 @@ public class PostDetailActivity extends ParentActivity implements OnLinkClickLis
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() > 0) {
-                    binding.layoutCommentField.btnSend.setTextColor(hashtagColor);
+                    binding.layoutCommentField.btnSend.setEnabled(true);
+                } else {
+                    binding.layoutCommentField.btnSend.setEnabled(false);
                 }
             }
 
@@ -310,6 +553,219 @@ public class PostDetailActivity extends ParentActivity implements OnLinkClickLis
             case R.id.tv_pre_comment:
                 loadNextComment();
                 break;
+
+            case R.id.btn_comment:
+                onClickCommentBtn();
+                break;
+
+            case R.id.btn_wonderple:
+                onClickWonderpleBtn();
+                break;
+
+            case R.id.btn_wonder:
+                onClickWonderBtn();
+                break;
+
+            case R.id.btn_follow_report:
+                OptionDialog dialog = new OptionDialog(this, uid, auid, iid);
+                dialog.show();
+                break;
+
+            case R.id.btn_mention:
+                binding.layoutCommentField.etInputComment.append("@");
+                break;
+
+            case R.id.btn_hashtag:
+                binding.layoutCommentField.etInputComment.append("#");
+                break;
+
+            case R.id.btn_send:
+                sendComment();
+                break;
+        }
+    }
+
+
+    private void onClickCommentBtn() {
+        binding.layoutCommentField.childLayoutCommentField.setVisibility(View.VISIBLE);
+        binding.layoutCommentField.etInputComment.requestFocus();
+//        KeyboardUtils.showKeyboard();
+        binding.layoutCommentField.etInputComment.setFocusable(true);
+        binding.layoutCommentField.etInputComment.setFocusableInTouchMode(true);
+
+        if (binding.layoutCommentField.etInputComment.hasFocus()) {
+            binding.btnMention.setVisibility(View.VISIBLE);
+            binding.btnHashtag.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void onClickWonderpleBtn() {
+
+        /**
+         * if ----> Cancel Wonderple
+         * else if ----> Apply Wonderple
+         */
+        if (!"0".equals(checkWonderple)) {
+            binding.btnWonderple.setImageResource(R.drawable.posting_tab_wonderple_n);
+            wonderpleCount = String.valueOf(Integer.parseInt(wonderpleCount) - 1);
+            showWonderpleCount(wonderpleCount);
+            checkWonderple = "0";
+        } else if ("0".equals(checkWonderple)) {
+            binding.btnWonderple.setImageResource(R.drawable.posting_tab_wonderple_p);
+            wonderpleCount = String.valueOf(Integer.parseInt(wonderpleCount) + 1);
+            showWonderpleCount(wonderpleCount);
+            checkWonderple = "1";
+        }
+
+        Call<JsonObject> jsonObjectCall = NetworkUtil.getInstace().wonderpleApply(iid, uid);
+        jsonObjectCall.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                JsonObject jsonObject = response.body();
+                String message = jsonObject.get("message").toString().replace("\"", "");
+
+                if ("wonderple applied".equals(message)) {
+                    JSLog.D("wonderple applied", new Throwable());
+                } else if ("wonderple deleted".equals(message)) {
+                    JSLog.D("wonderple deleted", new Throwable());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    private void onClickWonderBtn() {
+
+    }
+
+    private void sendComment() {
+        String comment = binding.layoutCommentField.etInputComment.getText().toString();
+        Call<JsonObject> jsonObjectCall = NetworkUtil.getInstace().commentApply(iid, uid, comment);
+        jsonObjectCall.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                JsonObject jsonObject = response.body();
+                String message = jsonObject.get("message").toString().replace("\"", "");
+
+                if ("comment applied".equals(message)) {
+
+                    String commentText = comment;
+
+//        ArrayList<int[]> hashtagSpans = getSpans(commentText, '#');
+
+//        if (hashtagSpans != null) {
+//            for (int i=0; i<hashtagSpans.size(); i++) {
+//                int[] span = hashtagSpans.get(i);
+//                int hashTagStart = span[0];
+//                int hashTagEnd = span[1];
+//
+//                commentsContent.setSpan(new Hashtag(this), hashTagStart, hashTagEnd, 0);
+//            }
+//        }
+
+                    ArrayList<int[]> calloutSpans = getSpans(commentText, '@');
+
+                    SpannableString commentsContent = new SpannableString(commentText);
+
+                    if (calloutSpans != null) {
+                        for(int i = 0; i < calloutSpans.size(); i++) {
+                            int[] span = calloutSpans.get(i);
+                            int calloutStart = span[0];
+                            int calloutEnd = span[1];
+
+                            tagUsers.add(commentsContent.subSequence(calloutStart + 1, calloutEnd).toString());
+                        }
+                    }
+
+                    if (tagUsers != null) {
+                        requestNoticeToUser(iid, uid, jsonObject.get("comment_id").toString().replace("\"", ""), String.valueOf(tagUsers.size()), tagUsers);
+                        tagUsers.clear();
+                    }
+
+
+                    binding.layoutCommentField.etInputComment.setText("");
+                    commentCount = String.valueOf(Integer.parseInt(commentCount) + 1);
+                    loadComment();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void requestNoticeToUser(String iid, String uid, String cid, String tagCount, List<String> tag) {
+        Call<JsonObject> jsonObjectCall = NetworkUtil.getInstace().commentApplyTo(iid, uid, cid, tagCount, tag);
+        jsonObjectCall.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                JsonObject jsonObject = response.body();
+                String message = jsonObject.get("message").toString().replace("\"", "");
+
+                if ("comment applied to all tagged users".equals(message)) {
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                JSLog.E("request notice to user error", t);
+            }
+        });
+    }
+
+    private ArrayList<int[]> getSpans(String body, char prefix) {
+        ArrayList<int[]> spans = new ArrayList<>();
+
+        Pattern pattern = Pattern.compile(prefix + "\\w+");
+        Matcher matcher = pattern.matcher(body);
+
+        while (matcher.find()) {
+            int[] currentSpan = new int[2];
+            currentSpan[0] = matcher.start();
+            currentSpan[1] = matcher.end();
+            spans.add(currentSpan);
+        }
+
+        return spans;
+    }
+
+
+    private void showWonderpleCount(String wonderpleCount) {
+        if (!"0".equals(wonderpleCount)) {
+            binding.tvWonderple.setText(getString(R.string.str_post_detail_wonderple_count, wonderpleCount));
+            binding.tvWonderple.setVisibility(View.VISIBLE);
+            AnimationUtil.setAnimation(binding.tvWonderple);
+        } else {
+            binding.tvWonderple.setVisibility(View.GONE);
+        }
+    }
+
+    private void showWonderCount(String wonderCount) {
+        if (!"0".equals(wonderCount)) {
+            binding.tvWonder.setText(getString(R.string.str_post_detail_wonder_count, wonderCount));
+            binding.tvWonder.setVisibility(View.VISIBLE);
+            AnimationUtil.setAnimation(binding.tvWonder);
+        }
+    }
+
+    private void showCommentCount(String commentCount) {
+        if (!"0".equals(commentCount)) {
+            if (Integer.parseInt(commentCount) > 10) {
+                binding.layoutComment.tvPreComment.setVisibility(View.VISIBLE);
+            }
+        }
+        if (!"0".equals(commentCount)) {
+            binding.layoutComment.childLayoutComment.setVisibility(View.VISIBLE);
+            binding.layoutComment.layoutCommentHeader.tvComment.setText(getString(R.string.str_post_detail_comment_count, commentCount));
+            AnimationUtil.setAnimation(binding.layoutComment.layoutCommentHeader.tvComment);
         }
     }
 
@@ -367,6 +823,17 @@ public class PostDetailActivity extends ParentActivity implements OnLinkClickLis
             binding.layoutUserList.rvMentionList.setVisibility(View.VISIBLE);
         } else {
             binding.layoutUserList.rvMentionList.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (binding.layoutCommentField.childLayoutCommentField.getVisibility() == View.VISIBLE) {
+            binding.layoutCommentField.childLayoutCommentField.setVisibility(View.GONE);
+            binding.btnMention.setVisibility(View.GONE);
+            binding.btnHashtag.setVisibility(View.GONE);
+        } else {
+            super.onBackPressed();
         }
     }
 }
